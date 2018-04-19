@@ -1,0 +1,15 @@
+language: java
+
+before_install:
+  - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/openjdk_linux-x64.tar.gz
+  - tar -xzf openjdk_linux-x64.tar.gz
+  - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/apache-maven.zip
+  - unzip -qq apache-maven.zip
+  - export M2_HOME=$PWD/apache-maven
+  - export JAVA_HOME=$PWD/openjdk_linux-x64
+  - export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+
+script:
+  - mvn -V -B -s settings.xml test
+install:
+  - mvn -V -B -s settings.xml clean install
