@@ -2,7 +2,7 @@
 <!--
   ~ This file is part of the Yildiz-Engine project, licenced under the MIT License  (MIT)
   ~
-  ~  Copyright (c) 2018 GrÃ©gory Van den Borre
+  ~  Copyright (c) 2018 Grégory Van den Borre
   ~
   ~  More infos available: https://www.yildiz-games.be
   ~
@@ -33,7 +33,7 @@
   <url>https://bitbucket.org/yildiz-engine-team/common-application</url>
 
   <artifactId>common-application</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <packaging>jar</packaging>
   <inceptionYear>2018</inceptionYear>
