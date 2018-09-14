@@ -5,13 +5,10 @@ before_install:
   - unzip oraclejdk_linux-x64.zip
   - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/apache-maven.zip
   - unzip -qq apache-maven.zip
-  - ls
-  - cd oraclejdk_linux-x64
-  - ls
-  - cd ..
   - export M2_HOME=$PWD/apache-maven
   - export JAVA_HOME=$PWD/oraclejdk_linux-x64
   - export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+  - java -version
   - |
     if [ "${JDK_SYSTEM_CACERTS}" == '1' ]; then
       mv "${JAVA_HOME}/lib/security/cacerts" "${JAVA_HOME}/lib/security/cacerts.jdk"
