@@ -8,7 +8,8 @@ before_install:
   - export M2_HOME=$PWD/apache-maven
   - export JAVA_HOME=$PWD/openjdk_linux-x64
   - export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
-  - if [ "${JDK_SYSTEM_CACERTS}" == '1' ]; then
+  - |
+    if [ "${JDK_SYSTEM_CACERTS}" == '1' ]; then
       mv "${JAVA_HOME}/lib/security/cacerts" "${JAVA_HOME}/lib/security/cacerts.jdk"
       ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
     fi
