@@ -2,7 +2,7 @@ language: java
 
 before_install:
   - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/oraclejdk_linux-x64.zip
-  - unzip -qq oraclejdk_linux-x64.zip
+  - unzip oraclejdk_linux-x64.zip
   - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/apache-maven.zip
   - unzip -qq apache-maven.zip
   - ls
