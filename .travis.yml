@@ -1,19 +1,7 @@
 language: java
 
-before_install:
-  - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/oraclejdk_linux-x64.zip
-  - unzip oraclejdk_linux-x64.zip
-  - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/apache-maven.zip
-  - unzip -qq apache-maven.zip
-  - export M2_HOME=$PWD/apache-maven
-  - export JAVA_HOME=$PWD/oraclejdk_linux-x64
-  - export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
-  - java -version
-  - |
-    if [ "${JDK_SYSTEM_CACERTS}" == '1' ]; then
-      mv "${JAVA_HOME}/lib/security/cacerts" "${JAVA_HOME}/lib/security/cacerts.jdk"
-      ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
-    fi
+jdk:
+  - oraclejdk9
 
 script:
   - mvn -V -B -s settings.xml test
