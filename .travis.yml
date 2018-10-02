@@ -1,15 +1,10 @@
-language: java
+sudo: required
+
+services:
+  - docker
 
 before_install:
-  - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/openjdk_linux-x64.tar.gz
-  - tar -xzf openjdk_linux-x64.tar.gz
-  - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/apache-maven.zip
-  - unzip -qq apache-maven.zip
-  - export M2_HOME=$PWD/apache-maven
-  - export JAVA_HOME=$PWD/openjdk_linux-x64
-  - export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+  - docker pull moussavdb/build-java
 
 script:
-  - mvn -V -B -s settings.xml test
-install:
-  - mvn -V -B -s settings.xml clean install
+  - docker run -v $PWD:/src -w /src moussavdb/build-java mvn -V -s settings.xml org.jacoco:jacoco-maven-plugin:prepare-agent clean install sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.login=$SONAR
