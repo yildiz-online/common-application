@@ -1,5 +1,10 @@
 sudo: required
 
+language: generic
+
+git:
+  depth: false
+
 services:
   - docker
 
