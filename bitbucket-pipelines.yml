@@ -5,10 +5,3 @@ pipelines:
     - step:
         script:
           - mvn -V -B -s settings.xml package
-  branches:
-    master:
-      - step:
-          script:
-            - openssl aes-256-cbc -pass pass:$OPENSSL_PWD -in private-key.gpg.enc -out private-key.gpg -d
-            - gpg --import --batch private-key.gpg
-            - mvn -V -B -s settings.xml deploy
