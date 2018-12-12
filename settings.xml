@@ -41,6 +41,13 @@
       </properties>
       <repositories>
         <repository>
+          <id>spring</id>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <url>http://repo.spring.io/plugins-release</url>
+        </repository>
+        <repository>
           <id>ossrh</id>
           <snapshots>
             <enabled>true</enabled>
