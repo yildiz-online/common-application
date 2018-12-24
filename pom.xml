@@ -49,4 +49,27 @@
     <version>2.2.5</version>
   </parent>
 
+  <dependencies>
+    <dependency>
+      <groupId>be.yildiz-games</groupId>
+      <artifactId>common-logging</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>be.yildiz-games</groupId>
+      <artifactId>common-git</artifactId>
+      <version>1.0.3-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>spring</id>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <url>http://repo.spring.io/libs-release</url>
+    </repository>
+  </repositories>
+
 </project>
