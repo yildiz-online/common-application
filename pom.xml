@@ -58,7 +58,7 @@
     <dependency>
       <groupId>be.yildiz-games</groupId>
       <artifactId>common-git</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.3</version>
     </dependency>
   </dependencies>
 
