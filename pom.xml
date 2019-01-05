@@ -60,14 +60,4 @@
     </dependency>
   </dependencies>
 
-  <repositories>
-    <repository>
-      <id>spring</id>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <url>http://repo.spring.io/libs-release</url>
-    </repository>
-  </repositories>
-
 </project>
