@@ -44,7 +44,7 @@
   <parent>
     <artifactId>parent</artifactId>
     <groupId>be.yildiz-games</groupId>
-    <version>2.2.5</version>
+    <version>3.0.1</version>
   </parent>
 
   <dependencies>
