@@ -49,6 +49,7 @@
           <id>ossrh</id>
           <snapshots>
             <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
           </snapshots>
           <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
