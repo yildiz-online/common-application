@@ -30,7 +30,7 @@
       <password>${env.OSSRH_PWD_TOKEN}</password>
     </server>
     <server>
-      <id>yildiz-nexus-release</id>
+      <id>yildiz-engine-nexus-release</id>
       <username>${env.REPO_USER}</username>
       <password>${env.REPO_PASSWORD}</password>
     </server>
@@ -46,22 +46,38 @@
       </properties>
       <repositories>
         <repository>
-          <id>ossrh</id>
+          <id>ossrh-snapshot</id>
           <snapshots>
             <enabled>true</enabled>
             <updatePolicy>always</updatePolicy>
           </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
           <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+          <id>ossrh-release</id>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
         <repository>
           <id>spring</id>
           <releases>
             <enabled>true</enabled>
           </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
           <url>http://repo.spring.io/libs-release</url>
         </repository>
         <repository>
-          <id>yildiz-nexus-release</id>
+          <id>yildiz-engine-nexus-release</id>
           <releases>
             <enabled>true</enabled>
           </releases>
