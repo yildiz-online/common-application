@@ -26,7 +26,7 @@ package be.yildizgames.common.application;
 import be.yildizgames.common.git.GitProperties;
 import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
-import be.yildizgames.common.logging.LogEngineFactory;
+import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.LoggerConfiguration;
 import be.yildizgames.common.util.Util;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class Starter {
      * @throws IOException
      */
     public static void start(LoggerConfiguration loggerConfiguration, String applicationName) throws IOException {
-        LogEngine logEngine = LogEngineFactory.getLogEngine();
+        LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
         logEngine.configureFromProperties(loggerConfiguration);
         Logger logger = LoggerFactory.getLogger(Starter.class);
         logger.info("Starting {} (PID:{})...", applicationName, Util.getPid());
