@@ -1,7 +1,0 @@
-image: moussavdb/build-java
-
-pipelines:
-  default:
-    - step:
-        script:
-          - mvn -V -B -s settings.xml package
