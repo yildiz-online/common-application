@@ -34,6 +34,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+/**
+ * @author Grégory Van den Borre
+ */
 public class Starter {
 
     /**
