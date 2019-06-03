@@ -29,8 +29,6 @@ import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.LoggerConfiguration;
 import be.yildizgames.common.util.Util;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -48,11 +46,11 @@ public class Starter {
     public static void start(LoggerConfiguration loggerConfiguration, String applicationName) throws IOException {
         LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
         logEngine.configureFromProperties(loggerConfiguration);
-        Logger logger = LoggerFactory.getLogger(Starter.class);
-        logger.info("Starting {} (PID:{})...", applicationName, Util.getPid());
+        System.Logger logger = System.getLogger(Starter.class.getName());
+        logger.log(System.Logger.Level.INFO, "Starting {} (PID:{})...", applicationName, Util.getPid());
         GitProperties git = GitPropertiesProvider.getGitProperties();
-        logger.info("Version: {}", git.getCommitId());
-        logger.info("Built at: {}", git.getBuildTime());
+        logger.log(System.Logger.Level.INFO,"Version: {}", git.getCommitId());
+        logger.log(System.Logger.Level.INFO,"Built at: {}", git.getBuildTime());
     }
 
 }
