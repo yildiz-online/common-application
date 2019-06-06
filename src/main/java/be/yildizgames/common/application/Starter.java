@@ -28,7 +28,6 @@ import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.LoggerConfiguration;
-import be.yildizgames.common.util.Util;
 
 import java.io.IOException;
 
@@ -47,7 +46,7 @@ public class Starter {
         LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
         logEngine.configureFromProperties(loggerConfiguration);
         System.Logger logger = System.getLogger(Starter.class.getName());
-        logger.log(System.Logger.Level.INFO, "Starting {} (PID:{})...", applicationName, Util.getPid());
+        logger.log(System.Logger.Level.INFO, "Starting {} (PID:{})...", applicationName, ProcessHandle.current().pid());
         GitProperties git = GitPropertiesProvider.getGitProperties();
         logger.log(System.Logger.Level.INFO,"Version: {}", git.getCommitId());
         logger.log(System.Logger.Level.INFO,"Built at: {}", git.getBuildTime());

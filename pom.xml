@@ -51,12 +51,12 @@
     <dependency>
       <groupId>be.yildiz-games</groupId>
       <artifactId>common-logging</artifactId>
-      <version>3.1.0</version>
+      <version>3.2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>be.yildiz-games</groupId>
       <artifactId>common-git</artifactId>
-      <version>1.0.3</version>
+      <version>1.0.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
