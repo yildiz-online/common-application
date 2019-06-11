@@ -32,9 +32,18 @@ import be.yildizgames.common.logging.LoggerConfiguration;
 import java.io.IOException;
 
 /**
+ * This class will configure any new application (logger,...)
+ *
  * @author Grégory Van den Borre
  */
 public class Starter {
+
+    /**
+     * Use the static function start instead.
+     */
+    private Starter() {
+        super();
+    }
 
     /**
      * Configure the logging, and display the GIT properties.
@@ -46,10 +55,10 @@ public class Starter {
         LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
         logEngine.configureFromProperties(loggerConfiguration);
         System.Logger logger = System.getLogger(Starter.class.getName());
-        logger.log(System.Logger.Level.INFO, "Starting {} (PID:{})...", applicationName, ProcessHandle.current().pid());
+        logger.log(System.Logger.Level.INFO, "Starting %s (PID:%s)...", applicationName, ProcessHandle.current().pid());
         GitProperties git = GitPropertiesProvider.getGitProperties();
-        logger.log(System.Logger.Level.INFO,"Version: {}", git.getCommitId());
-        logger.log(System.Logger.Level.INFO,"Built at: {}", git.getBuildTime());
+        logger.log(System.Logger.Level.INFO,"Version: %s", git.getCommitId());
+        logger.log(System.Logger.Level.INFO,"Built at: %s", git.getBuildTime());
     }
 
 }
