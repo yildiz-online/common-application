@@ -23,13 +23,19 @@
  */
 package be.yildizgames.common.application;
 
+import be.yildizgames.common.configuration.ConfigurationNotFoundAdditionalBehavior;
+import be.yildizgames.common.configuration.ConfigurationNotFoundDefault;
+import be.yildizgames.common.configuration.ConfigurationRetriever;
+import be.yildizgames.common.configuration.ConfigurationRetrieverFactory;
+import be.yildizgames.common.configuration.LoggerPropertiesConfiguration;
+import be.yildizgames.common.configuration.parameter.ApplicationArgs;
 import be.yildizgames.common.git.GitProperties;
 import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
-import be.yildizgames.common.logging.LoggerConfiguration;
 
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * This class will configure any new application (logger,...)
@@ -38,27 +44,50 @@ import java.io.IOException;
  */
 public class Starter {
 
+    private final String applicationName;
+
+    private Properties properties = new Properties();
+
     /**
      * Use the static function start instead.
      */
-    private Starter() {
+    private Starter(String applicationName) {
         super();
+        this.applicationName = applicationName;
     }
 
-    /**
-     * Configure the logging, and display the GIT properties.
-     * @param loggerConfiguration Configuration for the logger.
-     * @param applicationName Name of the application.
-     * @throws IOException
-     */
-    public static void start(LoggerConfiguration loggerConfiguration, String applicationName) throws IOException {
-        LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
-        logEngine.configureFromProperties(loggerConfiguration);
-        System.Logger logger = System.getLogger(Starter.class.getName());
-        logger.log(System.Logger.Level.INFO, "Starting %s (PID:%s)...", applicationName, ProcessHandle.current().pid());
-        GitProperties git = GitPropertiesProvider.getGitProperties();
-        logger.log(System.Logger.Level.INFO,"Version: %s", git.getCommitId());
-        logger.log(System.Logger.Level.INFO,"Built at: %s", git.getBuildTime());
+    public static Starter prepare(String applicationName) {
+        return new Starter(applicationName);
+    }
+
+    public Starter withConfiguration(String[] args, Properties defaultConfig, ConfigurationNotFoundAdditionalBehavior behavior) {
+        ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory
+                .fromFile(ConfigurationNotFoundDefault.fromDefault(defaultConfig, behavior));
+        this.properties = configurationRetriever.retrieveFromArgs(ApplicationArgs.of(args));
+        return this;
+    }
+
+    public Starter withConfiguration(String[] args,Properties defaultConfig) {
+        return this.withConfiguration(args, defaultConfig, () -> {});
+    }
+
+    public Starter start() {
+        try {
+            LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
+            logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
+            System.Logger logger = System.getLogger(Starter.class.getName());
+            logger.log(System.Logger.Level.INFO, "Starting %s (PID:%s)...", this.applicationName, ProcessHandle.current().pid());
+            GitProperties git = GitPropertiesProvider.getGitProperties();
+            logger.log(System.Logger.Level.INFO, "Version: %s", git.getCommitId());
+            logger.log(System.Logger.Level.INFO, "Built at: %s", git.getBuildTime());
+            return this;
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public Properties getProperties() {
+        return this.properties;
     }
 
 }

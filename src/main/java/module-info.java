@@ -25,6 +25,7 @@ module be.yildizgames.common.application {
 
     requires be.yildizgames.common.logging;
     requires be.yildizgames.common.git;
+    requires be.yildizgames.common.configuration;
     
     exports be.yildizgames.common.application;
 }
