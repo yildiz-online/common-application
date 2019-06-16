@@ -35,6 +35,7 @@ import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 /**
@@ -86,8 +87,11 @@ public class Application {
         }
     }
 
-    public Properties getProperties() {
-        return this.properties;
+    public <T> T getConfiguration(Class<T> c) {
+        try {
+            return c.getConstructor(Properties.class).newInstance(this.properties);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new IllegalStateException(e);
+        }
     }
-
 }
