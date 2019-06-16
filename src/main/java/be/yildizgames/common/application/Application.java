@@ -42,7 +42,7 @@ import java.util.Properties;
  *
  * @author Grégory Van den Borre
  */
-public class Starter {
+public class Application {
 
     private final String applicationName;
 
@@ -51,31 +51,31 @@ public class Starter {
     /**
      * Use the static function start instead.
      */
-    private Starter(String applicationName) {
+    private Application(String applicationName) {
         super();
         this.applicationName = applicationName;
     }
 
-    public static Starter prepare(String applicationName) {
-        return new Starter(applicationName);
+    public static Application prepare(String applicationName) {
+        return new Application(applicationName);
     }
 
-    public Starter withConfiguration(String[] args, Properties defaultConfig, ConfigurationNotFoundAdditionalBehavior behavior) {
+    public Application withConfiguration(String[] args, Properties defaultConfig, ConfigurationNotFoundAdditionalBehavior behavior) {
         ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory
                 .fromFile(ConfigurationNotFoundDefault.fromDefault(defaultConfig, behavior));
         this.properties = configurationRetriever.retrieveFromArgs(ApplicationArgs.of(args));
         return this;
     }
 
-    public Starter withConfiguration(String[] args,Properties defaultConfig) {
+    public Application withConfiguration(String[] args, Properties defaultConfig) {
         return this.withConfiguration(args, defaultConfig, () -> {});
     }
 
-    public Starter start() {
+    public Application start() {
         try {
             LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
             logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
-            System.Logger logger = System.getLogger(Starter.class.getName());
+            System.Logger logger = System.getLogger(Application.class.getName());
             logger.log(System.Logger.Level.INFO, "Starting %s (PID:%s)...", this.applicationName, ProcessHandle.current().pid());
             GitProperties git = GitPropertiesProvider.getGitProperties();
             logger.log(System.Logger.Level.INFO, "Version: %s", git.getCommitId());
