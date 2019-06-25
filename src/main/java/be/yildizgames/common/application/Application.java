@@ -27,12 +27,12 @@ import be.yildizgames.common.configuration.ConfigurationNotFoundAdditionalBehavi
 import be.yildizgames.common.configuration.ConfigurationNotFoundDefault;
 import be.yildizgames.common.configuration.ConfigurationRetriever;
 import be.yildizgames.common.configuration.ConfigurationRetrieverFactory;
-import be.yildizgames.common.configuration.LoggerPropertiesConfiguration;
 import be.yildizgames.common.configuration.parameter.ApplicationArgs;
 import be.yildizgames.common.git.GitProperties;
 import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
+import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -77,10 +77,10 @@ public class Application {
             LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
             logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
             System.Logger logger = System.getLogger(Application.class.getName());
-            logger.log(System.Logger.Level.INFO, "Starting %s (PID:%s)...", this.applicationName, ProcessHandle.current().pid());
+            logger.log(System.Logger.Level.INFO, "Starting {0} (PID:{1})...", this.applicationName, ProcessHandle.current().pid());
             GitProperties git = GitPropertiesProvider.getGitProperties();
-            logger.log(System.Logger.Level.INFO, "Version: %s", git.getCommitId());
-            logger.log(System.Logger.Level.INFO, "Built at: %s", git.getBuildTime());
+            logger.log(System.Logger.Level.INFO, "Version: {0}", git.getCommitId());
+            logger.log(System.Logger.Level.INFO, "Built at: {0}", git.getBuildTime());
             return this;
         } catch (IOException e) {
             throw new IllegalStateException(e);
