@@ -33,10 +33,12 @@ import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
+import be.yildizgames.common.logging.SystemLoggerSlf4jProvider;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
+import java.util.ServiceLoader;
 
 /**
  * This class will configure any new application (logger,...)
@@ -74,6 +76,7 @@ public class Application {
 
     public Application start() {
         try {
+            ServiceLoader.load(SystemLoggerSlf4jProvider.class);
             LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
             logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
             System.Logger logger = System.getLogger(Application.class.getName());

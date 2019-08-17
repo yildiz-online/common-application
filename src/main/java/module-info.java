@@ -22,6 +22,7 @@
  *
  */
 module be.yildizgames.common.application {
+    uses be.yildizgames.common.logging.SystemLoggerSlf4jProvider;
 
     requires be.yildizgames.common.logging;
     requires be.yildizgames.common.git;
