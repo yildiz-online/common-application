@@ -33,12 +33,11 @@ import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
+import be.yildizgames.common.logging.LoggerPropertiesDefault;
 import be.yildizgames.common.logging.SystemLoggerSlf4jProvider;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
-import java.util.ServiceLoader;
 
 /**
  * This class will configure any new application (logger,...)
@@ -76,25 +75,27 @@ public class Application {
 
     public Application start() {
         try {
-            ServiceLoader.load(SystemLoggerSlf4jProvider.class);
             LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
             logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
-            System.Logger logger = System.getLogger(Application.class.getName());
-            logger.log(System.Logger.Level.INFO, "Starting {0} (PID:{1})...", this.applicationName, ProcessHandle.current().pid());
+            System.LoggerFinder finder = new SystemLoggerSlf4jProvider();
+            System.Logger logger = finder.getLogger(Application.class.getName(), Application.class.getModule());
+            logger.log(System.Logger.Level.INFO, "Starting {0} (PID:{1}).", this.applicationName, ProcessHandle.current().pid());
             GitProperties git = GitPropertiesProvider.getGitProperties();
-            logger.log(System.Logger.Level.INFO, "Version: {0}", git.getCommitId());
-            logger.log(System.Logger.Level.INFO, "Built at: {0}", git.getBuildTime());
+            logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
+            logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
             return this;
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    public <T> T getConfiguration(Class<T> c) {
-        try {
-            return c.getConstructor(Properties.class).newInstance(this.properties);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new IllegalStateException(e);
-        }
+    public final Properties getConfiguration() {
+        return this.properties;
+    }
+
+    public static void main(String[] args) {
+        Application a = new Application("test")
+                .withConfiguration(args, new LoggerPropertiesDefault());
+        a.start();
     }
 }
