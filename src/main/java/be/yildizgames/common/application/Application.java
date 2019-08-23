@@ -92,10 +92,4 @@ public class Application {
     public final Properties getConfiguration() {
         return this.properties;
     }
-
-    public static void main(String[] args) {
-        Application a = new Application("test")
-                .withConfiguration(args, new LoggerPropertiesDefault());
-        a.start();
-    }
 }

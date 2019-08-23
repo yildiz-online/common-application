@@ -22,7 +22,6 @@
  *
  */
 module be.yildizgames.common.application {
-    uses  be.yildizgames.common.application.Application;
     uses be.yildizgames.common.logging.LoggerPropertiesDefault;
 
     requires be.yildizgames.common.logging;
