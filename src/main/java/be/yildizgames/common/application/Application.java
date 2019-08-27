@@ -33,7 +33,6 @@ import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
-import be.yildizgames.common.logging.LoggerPropertiesDefault;
 import be.yildizgames.common.logging.SystemLoggerSlf4jProvider;
 
 import java.io.IOException;
@@ -49,6 +48,8 @@ public class Application {
     private final String applicationName;
 
     private Properties properties = new Properties();
+
+    private boolean started;
 
     /**
      * Use the static function start instead.
@@ -74,6 +75,9 @@ public class Application {
     }
 
     public Application start() {
+        if(this.started) {
+            return this;
+        }
         try {
             LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
             logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
@@ -83,6 +87,7 @@ public class Application {
             GitProperties git = GitPropertiesProvider.getGitProperties();
             logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
             logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
+            this.started = true;
             return this;
         } catch (IOException e) {
             throw new IllegalStateException(e);
