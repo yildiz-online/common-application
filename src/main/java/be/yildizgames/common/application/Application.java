@@ -94,6 +94,28 @@ public class Application {
         }
     }
 
+    public Application start(Starter starter) {
+        if(this.started) {
+            return this;
+        }
+        try {
+            LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
+            logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
+            System.LoggerFinder finder = new SystemLoggerSlf4jProvider();
+            System.Logger logger = finder.getLogger(Application.class.getName(), Application.class.getModule());
+            logger.log(System.Logger.Level.INFO, "Starting {0} (PID:{1}).", this.applicationName, ProcessHandle.current().pid());
+            GitProperties git = GitPropertiesProvider.getGitProperties();
+            logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
+            logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
+            starter.setApplication(this);
+            starter.start();
+            this.started = true;
+            return this;
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public final Properties getConfiguration() {
         return this.properties;
     }
