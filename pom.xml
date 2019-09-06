@@ -55,17 +55,17 @@
     <dependency>
       <groupId>be.yildiz-games</groupId>
       <artifactId>common-logging</artifactId>
-      <version>3.2.0-SNAPSHOT</version>
+      <version>3.2.0</version>
     </dependency>
     <dependency>
       <groupId>be.yildiz-games</groupId>
       <artifactId>common-git</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
+      <version>1.0.4</version>
     </dependency>
     <dependency>
       <groupId>be.yildiz-games</groupId>
       <artifactId>common-configuration</artifactId>
-      <version>1.0.5-SNAPSHOT</version>
+      <version>1.0.5</version>
     </dependency>
   </dependencies>
 
