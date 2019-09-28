@@ -65,7 +65,7 @@
     <dependency>
       <groupId>be.yildiz-games</groupId>
       <artifactId>common-configuration</artifactId>
-      <version>1.1.1-SNAPSHOT</version>
+      <version>1.1.1</version>
     </dependency>
   </dependencies>
 
