@@ -33,7 +33,6 @@ import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
-import be.yildizgames.common.logging.SystemLoggerSlf4jProvider;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -79,14 +78,7 @@ public class Application {
             return this;
         }
         try {
-            LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
-            logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
-            System.LoggerFinder finder = new SystemLoggerSlf4jProvider();
-            System.Logger logger = finder.getLogger(Application.class.getName(), Application.class.getModule());
-            logger.log(System.Logger.Level.INFO, "Starting {0} (PID:{1}).", this.applicationName, ProcessHandle.current().pid());
-            GitProperties git = GitPropertiesProvider.getGitProperties();
-            logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
-            logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
+            init();
             this.started = true;
             return this;
         } catch (IOException e) {
@@ -99,14 +91,7 @@ public class Application {
             return this;
         }
         try {
-            LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
-            logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
-            System.LoggerFinder finder = new SystemLoggerSlf4jProvider();
-            System.Logger logger = finder.getLogger(Application.class.getName(), Application.class.getModule());
-            logger.log(System.Logger.Level.INFO, "Starting {0} (PID:{1}).", this.applicationName, ProcessHandle.current().pid());
-            GitProperties git = GitPropertiesProvider.getGitProperties();
-            logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
-            logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
+            init();
             starter.setApplication(this);
             starter.start();
             this.started = true;
@@ -114,6 +99,16 @@ public class Application {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    private void init() throws IOException {
+        LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
+        logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
+        System.Logger logger = System.getLogger(Application.class.getName());
+        logger.log(System.Logger.Level.INFO, "Starting {0} (PID:{1}).", this.applicationName, ProcessHandle.current().pid());
+        GitProperties git = GitPropertiesProvider.getGitProperties();
+        logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
+        logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
     }
 
     public final Properties getConfiguration() {
