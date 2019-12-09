@@ -60,7 +60,7 @@
     <dependency>
       <groupId>be.yildiz-games</groupId>
       <artifactId>common-git</artifactId>
-      <version>1.0.4</version>
+      <version>1.0.5</version>
     </dependency>
     <dependency>
       <groupId>be.yildiz-games</groupId>
