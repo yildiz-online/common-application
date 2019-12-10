@@ -35,6 +35,7 @@ import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -55,25 +56,28 @@ public class Application {
      */
     private Application(String applicationName) {
         super();
-        this.applicationName = applicationName;
+        this.applicationName = Objects.requireNonNull(applicationName);
+        if(applicationName.isEmpty()) {
+            throw new IllegalArgumentException("Application name cannot be empty");
+        }
     }
 
     public static Application prepare(String applicationName) {
         return new Application(applicationName);
     }
 
-    public Application withConfiguration(String[] args, Properties defaultConfig, ConfigurationNotFoundAdditionalBehavior behavior) {
+    public final Application withConfiguration(String[] args, Properties defaultConfig, ConfigurationNotFoundAdditionalBehavior behavior) {
         ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory
                 .fromFile(ConfigurationNotFoundDefault.fromDefault(defaultConfig, behavior));
         this.properties = configurationRetriever.retrieveFromArgs(ApplicationArgs.of(args));
         return this;
     }
 
-    public Application withConfiguration(String[] args, Properties defaultConfig) {
+    public final Application withConfiguration(String[] args, Properties defaultConfig) {
         return this.withConfiguration(args, defaultConfig, () -> {});
     }
 
-    public Application start() {
+    public final Application start() {
         if(this.started) {
             return this;
         }
@@ -86,7 +90,7 @@ public class Application {
         }
     }
 
-    public Application start(Starter starter) {
+    public final Application start(Starter starter) {
         if(this.started) {
             return this;
         }
@@ -101,6 +105,10 @@ public class Application {
         }
     }
 
+    public final Properties getConfiguration() {
+        return this.properties;
+    }
+
     private void init() throws IOException {
         LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
         logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
@@ -109,9 +117,5 @@ public class Application {
         GitProperties git = GitPropertiesProvider.getGitProperties();
         logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
         logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
-    }
-
-    public final Properties getConfiguration() {
-        return this.properties;
     }
 }
