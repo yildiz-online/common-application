@@ -21,7 +21,7 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  SOFTWARE.
  *
  */
-module be.yildizgames.common.application {
+open module be.yildizgames.common.application {
     uses be.yildizgames.common.logging.LoggerPropertiesDefault;
 
     requires be.yildizgames.common.logging;
