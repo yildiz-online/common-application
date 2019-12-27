@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Properties;
 
 class StarterTest {
@@ -36,6 +37,7 @@ class StarterTest {
 
         @Test
         void happyFlow() {
+            deleteFile();
             Starter s = new Starter() {
                 @Override
                 public void start() {
@@ -52,6 +54,7 @@ class StarterTest {
 
         @Test
         void happyFlow(){
+            deleteFile();
             Properties p = new Properties();
             p.setProperty("t", "11");
             Application a = Application.prepare("test");
@@ -68,6 +71,7 @@ class StarterTest {
 
         @Test
         void nullParam() {
+            deleteFile();
             Starter s = new Starter() {
                 @Override
                 public void start() {
@@ -77,6 +81,13 @@ class StarterTest {
             Assertions.assertThrows(NullPointerException.class, () -> s.setApplication(null));
         }
 
+    }
+
+    private static void deleteFile() {
+        File f = new File("configuration.properties");
+        if(f.exists()) {
+            f.delete();
+        }
     }
 
 }
