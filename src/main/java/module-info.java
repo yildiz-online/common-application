@@ -27,6 +27,8 @@ open module be.yildizgames.common.application {
     requires be.yildizgames.common.logging;
     requires be.yildizgames.common.git;
     requires be.yildizgames.common.configuration;
+    requires be.yildizgames.module.http;
+    requires org.update4j;
     
     exports be.yildizgames.common.application;
 }

@@ -32,10 +32,14 @@ import be.yildizgames.common.git.GitProperties;
 import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
+import be.yildizgames.common.logging.Logger;
 import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
+import be.yildizgames.module.http.HttpRequest;
+import org.update4j.Configuration;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -46,6 +50,8 @@ import java.util.Properties;
 public class Application {
 
     private final String applicationName;
+
+    private String updateUrl;
 
     private Properties properties = new Properties();
 
@@ -75,6 +81,11 @@ public class Application {
 
     public final Application withConfiguration(String[] args, Properties defaultConfig) {
         return this.withConfiguration(args, defaultConfig, () -> {});
+    }
+
+    public final Application withUpdate(String url) {
+        this.updateUrl = url;
+        return this;
     }
 
     public final Application start() {
@@ -117,5 +128,16 @@ public class Application {
         GitProperties git = GitPropertiesProvider.getGitProperties();
         logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
         logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
+        Optional.ofNullable(this.updateUrl).ifPresent(this::update);
+    }
+
+    private void update(String url) {
+        try {
+            Configuration.read(
+                    new HttpRequest().getReader(url))
+                    .update();
+        } catch (Exception e) {
+            Logger.getLogger(Application.class).error(e);
+        }
     }
 }
