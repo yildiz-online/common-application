@@ -12,8 +12,6 @@
 
 package be.yildizgames.common.application.helper.cli;
 
-import be.yildizgames.common.logging.Logger;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,8 +31,6 @@ public class Banner {
     private static final String BORDER_LINE = "*".repeat(LINE_LENGTH);
 
     private static final String SIDE_LINE =   "*" + " ".repeat(LINE_LENGTH - 2) + "*";
-
-    private final Logger logger = Logger.getLogger(this);
 
     private final String appName;
 
@@ -56,7 +52,7 @@ public class Banner {
         try (Stream<String> content = Files.lines(path)) {
             content.forEach(this.lines::add);
         } catch (IOException e) {
-            logger.error(e);
+            Terminal.println(e.toString());
             this.addLines();
             lines.add("*-- ERROR reading file: " + path);
         }
