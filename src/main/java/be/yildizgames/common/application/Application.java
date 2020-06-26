@@ -23,6 +23,8 @@
  */
 package be.yildizgames.common.application;
 
+import be.yildizgames.common.application.helper.cli.Banner;
+import be.yildizgames.common.application.helper.cli.BannerLine;
 import be.yildizgames.common.configuration.ConfigurationNotFoundAdditionalBehavior;
 import be.yildizgames.common.configuration.ConfigurationNotFoundDefault;
 import be.yildizgames.common.configuration.ConfigurationRetriever;
@@ -41,6 +43,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.function.Consumer;
 
 /**
  * This class will configure any new application (logger,...)
@@ -57,12 +60,15 @@ public class Application {
 
     private boolean started;
 
+    private Banner banner;
+
     /**
      * Use the static function start instead.
      */
     private Application(String applicationName) {
         super();
         this.applicationName = Objects.requireNonNull(applicationName);
+        this.banner = new Banner(applicationName);
         if(applicationName.isEmpty()) {
             throw new IllegalArgumentException("Application name cannot be empty");
         }
@@ -76,6 +82,16 @@ public class Application {
         ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory
                 .fromFile(ConfigurationNotFoundDefault.fromDefault(defaultConfig, behavior));
         this.properties = configurationRetriever.retrieveFromArgs(ApplicationArgs.of(args));
+        return this;
+    }
+
+    public final Application withBanner(Banner banner) {
+        this.banner = Objects.requireNonNull(banner);
+        return this;
+    }
+
+    public final Application addBannerLine(BannerLine line) {
+        this.banner.addLine(line);
         return this;
     }
 
@@ -124,6 +140,7 @@ public class Application {
         LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
         logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
         System.Logger logger = System.getLogger(Application.class.getName());
+        this.banner.display();
         logger.log(System.Logger.Level.INFO, "Starting {0} (PID:{1}).", this.applicationName, ProcessHandle.current().pid());
         GitProperties git = GitPropertiesProvider.getGitProperties();
         logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
