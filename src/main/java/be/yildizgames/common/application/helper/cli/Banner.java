@@ -28,7 +28,7 @@ import java.util.stream.Stream;
  */
 public class Banner {
 
-    private static int LINE_LENGTH = 80;
+    private static final int LINE_LENGTH = 80;
 
     private static final String BORDER_LINE = "*".repeat(LINE_LENGTH);
 

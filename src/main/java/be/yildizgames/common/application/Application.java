@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.function.Consumer;
 
 /**
  * This class will configure any new application (logger,...)
