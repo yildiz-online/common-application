@@ -31,4 +31,6 @@ open module be.yildizgames.common.application {
     requires org.update4j;
     
     exports be.yildizgames.common.application;
+    exports be.yildizgames.common.application.helper.network;
+    exports be.yildizgames.common.application.helper.cli;
 }
