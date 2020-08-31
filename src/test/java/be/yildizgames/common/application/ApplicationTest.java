@@ -61,7 +61,7 @@ class ApplicationTest {
 
         @Test
         void happyFlow() throws IOException {
-            Files.deleteIfExists(Path.of("configuration.properties"));
+            Files.deleteIfExists(Path.of("config/configuration.properties"));
             Properties p = new Properties();
             p.setProperty("t", "1");
             Application application = Application.prepare("test");
@@ -76,12 +76,12 @@ class ApplicationTest {
             Assertions.assertEquals("org.hsqldb.persist.Logger,hsqldb.db,jdk.internal.httpclient.debug,jdk.event.security,javafx.scene.focus,com.sun.webkit.perf.WCFontPerfLogger.TOTALTIME", application.getConfiguration().get("logger.disabled"));
             Assertions.assertEquals("INFO", application.getConfiguration().get("logger.level"));
             Assertions.assertEquals("logback.xml", application.getConfiguration().get("logger.configuration.file"));
-            Files.deleteIfExists(Path.of("configuration.properties"));
+            Files.deleteIfExists(Path.of("config/configuration.properties"));
         }
 
         @Test
         void withOverride() throws IOException {
-            Files.deleteIfExists(Path.of("configuration.properties"));
+            Files.deleteIfExists(Path.of("config/configuration.properties"));
             Properties p = new Properties();
             p.setProperty("t", "1");
             p.setProperty(LoggerPropertiesConfiguration.LOGGER_FILE_OUTPUT_KEY, "log.log");
@@ -97,7 +97,7 @@ class ApplicationTest {
             Assertions.assertEquals("org.hsqldb.persist.Logger,hsqldb.db,jdk.internal.httpclient.debug,jdk.event.security,javafx.scene.focus,com.sun.webkit.perf.WCFontPerfLogger.TOTALTIME", application.getConfiguration().get("logger.disabled"));
             Assertions.assertEquals("INFO", application.getConfiguration().get("logger.level"));
             Assertions.assertEquals("logback.xml", application.getConfiguration().get("logger.configuration.file"));
-            Files.deleteIfExists(Path.of("configuration.properties"));
+            Files.deleteIfExists(Path.of("config/configuration.properties"));
         }
     }
 

@@ -23,6 +23,8 @@
  */
 package be.yildizgames.common.application;
 
+import be.yildizgames.common.logging.Logger;
+
 import java.util.Objects;
 import java.util.Properties;
 
@@ -45,5 +47,14 @@ public abstract class Starter {
         return this.application.getConfiguration();
     }
 
+    void startLoggedErrors() {
+        try {
+            this.start();
+        } catch (Exception e) {
+            Logger.getLogger(this).error(e);
+        }
+    }
+
     public abstract void start();
+
 }

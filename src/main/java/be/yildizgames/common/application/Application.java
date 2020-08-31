@@ -127,7 +127,7 @@ public class Application {
         try {
             init();
             starter.setApplication(this);
-            starter.start();
+            starter.startLoggedErrors();
             this.started = true;
             return this;
         } catch (IOException e) {
