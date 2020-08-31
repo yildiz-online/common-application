@@ -22,7 +22,6 @@
  *
  */
 open module be.yildizgames.common.application {
-    uses be.yildizgames.common.logging.LoggerPropertiesDefault;
 
     requires be.yildizgames.common.logging;
     requires be.yildizgames.common.git;

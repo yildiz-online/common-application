@@ -23,10 +23,14 @@
  */
 package be.yildizgames.common.application;
 
+import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 
 class ApplicationTest {
@@ -56,12 +60,44 @@ class ApplicationTest {
     class WithConfiguration {
 
         @Test
-        void happyFlow() {
+        void happyFlow() throws IOException {
+            Files.deleteIfExists(Path.of("configuration.properties"));
             Properties p = new Properties();
             p.setProperty("t", "1");
             Application application = Application.prepare("test");
             application.withConfiguration(new String[]{}, p);
+            Assertions.assertEquals(9, application.getConfiguration().size());
             Assertions.assertEquals("1", application.getConfiguration().get("t"));
+            Assertions.assertEquals("logs/test.log", application.getConfiguration().get(LoggerPropertiesConfiguration.LOGGER_FILE_OUTPUT_KEY));
+            Assertions.assertEquals("60000", application.getConfiguration().get("logger.tcp.port"));
+            Assertions.assertEquals("CONSOLE,FILE", application.getConfiguration().get("logger.output"));
+            Assertions.assertEquals("%d{yyyy/MM/dd HH:mm:ss} | %level | %logger | %msg%n", application.getConfiguration().get("logger.pattern"));
+            Assertions.assertEquals("localhost", application.getConfiguration().get("logger.tcp.host"));
+            Assertions.assertEquals("org.hsqldb.persist.Logger,hsqldb.db,jdk.internal.httpclient.debug,jdk.event.security,javafx.scene.focus,com.sun.webkit.perf.WCFontPerfLogger.TOTALTIME", application.getConfiguration().get("logger.disabled"));
+            Assertions.assertEquals("INFO", application.getConfiguration().get("logger.level"));
+            Assertions.assertEquals("logback.xml", application.getConfiguration().get("logger.configuration.file"));
+            Files.deleteIfExists(Path.of("configuration.properties"));
+        }
+
+        @Test
+        void withOverride() throws IOException {
+            Files.deleteIfExists(Path.of("configuration.properties"));
+            Properties p = new Properties();
+            p.setProperty("t", "1");
+            p.setProperty(LoggerPropertiesConfiguration.LOGGER_FILE_OUTPUT_KEY, "log.log");
+            Application application = Application.prepare("test");
+            application.withConfiguration(new String[]{}, p);
+            Assertions.assertEquals(9, application.getConfiguration().size());
+            Assertions.assertEquals("1", application.getConfiguration().get("t"));
+            Assertions.assertEquals("log.log", application.getConfiguration().get(LoggerPropertiesConfiguration.LOGGER_FILE_OUTPUT_KEY));
+            Assertions.assertEquals("60000", application.getConfiguration().get("logger.tcp.port"));
+            Assertions.assertEquals("CONSOLE,FILE", application.getConfiguration().get("logger.output"));
+            Assertions.assertEquals("%d{yyyy/MM/dd HH:mm:ss} | %level | %logger | %msg%n", application.getConfiguration().get("logger.pattern"));
+            Assertions.assertEquals("localhost", application.getConfiguration().get("logger.tcp.host"));
+            Assertions.assertEquals("org.hsqldb.persist.Logger,hsqldb.db,jdk.internal.httpclient.debug,jdk.event.security,javafx.scene.focus,com.sun.webkit.perf.WCFontPerfLogger.TOTALTIME", application.getConfiguration().get("logger.disabled"));
+            Assertions.assertEquals("INFO", application.getConfiguration().get("logger.level"));
+            Assertions.assertEquals("logback.xml", application.getConfiguration().get("logger.configuration.file"));
+            Files.deleteIfExists(Path.of("configuration.properties"));
         }
     }
 

@@ -25,6 +25,7 @@ package be.yildizgames.common.application;
 
 import be.yildizgames.common.application.helper.cli.Banner;
 import be.yildizgames.common.application.helper.cli.BannerLine;
+import be.yildizgames.common.application.helper.logging.LoggerPropertiesConsoleFile;
 import be.yildizgames.common.configuration.ConfigurationNotFoundAdditionalBehavior;
 import be.yildizgames.common.configuration.ConfigurationNotFoundDefault;
 import be.yildizgames.common.configuration.ConfigurationRetriever;
@@ -40,9 +41,11 @@ import be.yildizgames.module.http.HttpRequest;
 import org.update4j.Configuration;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 /**
  * This class will configure any new application (logger,...)
@@ -79,7 +82,8 @@ public class Application {
 
     public final Application withConfiguration(String[] args, Properties defaultConfig, ConfigurationNotFoundAdditionalBehavior behavior) {
         ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory
-                .fromFile(ConfigurationNotFoundDefault.fromDefault(defaultConfig, behavior));
+                .fromFile(ConfigurationNotFoundDefault.fromDefault(Stream.of(new LoggerPropertiesConsoleFile(applicationName), defaultConfig)
+                        .collect(Properties::new, Map::putAll, Map::putAll), behavior));
         this.properties = configurationRetriever.retrieveFromArgs(ApplicationArgs.of(args));
         return this;
     }
