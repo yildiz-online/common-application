@@ -32,4 +32,5 @@ open module be.yildizgames.common.application {
     exports be.yildizgames.common.application;
     exports be.yildizgames.common.application.helper.network;
     exports be.yildizgames.common.application.helper.cli;
+    exports be.yildizgames.common.application.helper.splashscreen;
 }

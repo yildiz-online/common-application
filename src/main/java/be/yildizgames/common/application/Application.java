@@ -26,6 +26,9 @@ package be.yildizgames.common.application;
 import be.yildizgames.common.application.helper.cli.Banner;
 import be.yildizgames.common.application.helper.cli.BannerLine;
 import be.yildizgames.common.application.helper.logging.LoggerPropertiesConsoleFile;
+import be.yildizgames.common.application.helper.splashscreen.EmptySplashScreen;
+import be.yildizgames.common.application.helper.splashscreen.SplashScreen;
+import be.yildizgames.common.application.helper.splashscreen.SplashScreenProvider;
 import be.yildizgames.common.configuration.ConfigurationNotFoundAdditionalBehavior;
 import be.yildizgames.common.configuration.ConfigurationNotFoundDefault;
 import be.yildizgames.common.configuration.ConfigurationRetriever;
@@ -64,6 +67,10 @@ public class Application {
 
     private Banner banner;
 
+    private SplashScreenProvider splashScreenProvider;
+
+    private SplashScreen splashScreen;
+
     /**
      * Use the static function start instead.
      */
@@ -71,6 +78,7 @@ public class Application {
         super();
         this.applicationName = Objects.requireNonNull(applicationName);
         this.banner = new Banner(applicationName);
+        this.splashScreenProvider = EmptySplashScreen::new;
         if(applicationName.isEmpty()) {
             throw new IllegalArgumentException("Application name cannot be empty");
         }
@@ -90,6 +98,11 @@ public class Application {
 
     public final Application withBanner(Banner banner) {
         this.banner = Objects.requireNonNull(banner);
+        return this;
+    }
+
+    public final Application withSplashScreen(SplashScreenProvider splashScreen) {
+        this.splashScreenProvider = Objects.requireNonNull(splashScreen);
         return this;
     }
 
@@ -135,6 +148,10 @@ public class Application {
         }
     }
 
+    public final void applicationStarted() {
+        this.splashScreen.close();
+    }
+
     public final Properties getConfiguration() {
         return this.properties;
     }
@@ -148,6 +165,9 @@ public class Application {
         GitProperties git = GitPropertiesProvider.getGitProperties();
         logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
         logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
+        this.splashScreen = this.splashScreenProvider.buildSplashScreen();
+        this.splashScreen.setName(this.applicationName);
+        this.splashScreen.display();
         Optional.ofNullable(this.updateUrl).ifPresent(this::update);
     }
 
