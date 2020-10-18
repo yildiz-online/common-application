@@ -28,7 +28,7 @@
   <modelVersion>4.0.0</modelVersion>
   <name>Yildiz-Engine Common Application</name>
   <description>Common Util library to build application.</description>
-  <url>https://bitbucket.org/yildiz-engine-team/common-application</url>
+  <url>https://github.com/yildiz-online/common-application</url>
 
   <artifactId>common-application</artifactId>
   <version>1.1.7-SNAPSHOT</version>
@@ -36,9 +36,9 @@
   <packaging>jar</packaging>
   <inceptionYear>2018</inceptionYear>
   <scm>
-    <connection>scm:git:https://bitbucket.org/yildiz-engine-team/common-application</connection>
-    <developerConnection>scm:git:https://bitbucket.org/yildiz-engine-team/common-application</developerConnection>
-    <url>https://bitbucket.org/yildiz-engine-team/common-application</url>
+    <connection>scm:git:https://github.com/yildiz-online/common-application</connection>
+    <developerConnection>scm:git:https://github.com/yildiz-online/common-application</developerConnection>
+    <url>https://github.com/yildiz-online/common-application</url>
   </scm>
 
   <parent>
@@ -46,10 +46,6 @@
     <groupId>be.yildiz-games</groupId>
     <version>4.0.0</version>
   </parent>
-
-  <properties>
-    <java.version>11</java.version>
-  </properties>
 
   <dependencies>
     <dependency>
