@@ -7,3 +7,8 @@ updates:
     time: "04:00"
     timezone: Europe/Brussels
   open-pull-requests-limit: 99
+  assignees:
+    - "yildiz-online"
+  commit-message:
+    prefix: "[UPGRADE]"
+    include: "scope"
