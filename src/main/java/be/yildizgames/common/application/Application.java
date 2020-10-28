@@ -51,34 +51,52 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 /**
- * This class will configure any new application (logger,...)
+ * This class will:
+ * Configure any new application (logger,...).
+ * Display a banner.
+ * Manage application update.
  *
  * @author Grégory Van den Borre
  */
 public class Application {
 
+    /**
+     * Name of the application, never null.
+     */
     private final String applicationName;
 
+    /**
+     * Url to upade, null value will prevent to try to update.
+     */
     private String updateUrl;
 
     private Properties properties = new Properties();
 
     private boolean started;
 
+    /**
+     * Banner to display when the application starts, never null.
+     */
     private Banner banner;
 
-    private SplashScreenProvider splashScreenProvider;
+    /**
+     * Build the splashscreen, never null.
+     */
+    private SplashScreenProvider splashScreenProvider = EmptySplashScreen::new;
 
+    /**
+     * Splashscreen, built in init function.
+     */
     private SplashScreen splashScreen;
 
     /**
-     * Use the static function start instead.
+     * Constructor, private to force using the static function start instead.
+     * @param applicationName Name of the application.
      */
-    private Application(String applicationName) {
+    private Application(final String applicationName) {
         super();
         this.applicationName = Objects.requireNonNull(applicationName);
         this.banner = new Banner(applicationName);
-        this.splashScreenProvider = EmptySplashScreen::new;
         if(applicationName.isEmpty()) {
             throw new IllegalArgumentException("Application name cannot be empty");
         }
@@ -96,6 +114,11 @@ public class Application {
         return this;
     }
 
+    /**
+     * To set a custom banner, the banner will be displayed in the console interface when starting the application.
+     * @param banner Custom banner to set.
+     * @return This object for chaining.
+     */
     public final Application withBanner(Banner banner) {
         this.banner = Objects.requireNonNull(banner);
         return this;
@@ -115,11 +138,20 @@ public class Application {
         return this.withConfiguration(args, defaultConfig, () -> {});
     }
 
+    /**
+     * Provide the update mechanism.
+     * @param url Url to call to get the update manifest.
+     * @return This object for chaining.
+     */
     public final Application withUpdate(String url) {
-        this.updateUrl = url;
+        this.updateUrl = Objects.requireNonNull(url);
         return this;
     }
 
+    /**
+     * Initialize and start the application.
+     * @return This object for chaining.
+     */
     public final Application start() {
         if(this.started) {
             return this;
@@ -133,7 +165,13 @@ public class Application {
         }
     }
 
-    public final Application start(Starter starter) {
+    /**
+     * Initialize and start the application by using a starter.
+     * Provide support to log all uncaught exceptions.
+     * @param starter Starting application.
+     * @return This object for chaining.
+     */
+    public final Application start(final Starter starter) {
         if(this.started) {
             return this;
         }
@@ -148,6 +186,9 @@ public class Application {
         }
     }
 
+    /**
+     * To call once the application is started, this will close the splashscreen.
+     */
     public final void applicationStarted() {
         this.splashScreen.close();
     }
