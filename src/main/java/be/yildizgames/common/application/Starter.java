@@ -52,6 +52,7 @@ public abstract class Starter {
             this.start();
         } catch (Exception e) {
             Logger.getLogger(this).error(e);
+            System.exit(-1);
         }
     }
 

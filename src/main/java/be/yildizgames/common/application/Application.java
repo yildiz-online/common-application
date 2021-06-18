@@ -95,11 +95,18 @@ public class Application {
      */
     private Application(final String applicationName) {
         super();
+        shutThirdPartyLogger();
         this.applicationName = Objects.requireNonNull(applicationName);
         this.banner = new Banner(applicationName);
         if(applicationName.isEmpty()) {
             throw new IllegalArgumentException("Application name cannot be empty");
         }
+    }
+
+    private static void shutThirdPartyLogger() {
+        var databaseLogger = java.util.logging.Logger.getLogger("hsqldb.db");
+        databaseLogger.setUseParentHandlers(false);
+        databaseLogger.setLevel(java.util.logging.Level.WARNING);
     }
 
     public static Application prepare(String applicationName) {
