@@ -187,6 +187,7 @@ public class Application {
             starter.setApplication(this);
             starter.startLoggedErrors();
             this.started = true;
+            this.applicationStarted();
             return this;
         } catch (IOException e) {
             throw new IllegalStateException(e);
