@@ -70,6 +70,8 @@ public class Application {
      */
     private String updateUrl;
 
+    private int updateTimeOut = -1;
+
     private Properties properties = new Properties();
 
     private boolean started;
@@ -155,6 +157,12 @@ public class Application {
         return this;
     }
 
+    public final Application withUpdate(String url, int timeout) {
+        this.updateUrl = Objects.requireNonNull(url);
+        this.updateTimeOut = timeout;
+        return this;
+    }
+
     /**
      * Initialize and start the application.
      * @return This object for chaining.
@@ -223,7 +231,7 @@ public class Application {
     private void update(String url) {
         try {
             Configuration.read(
-                    new HttpRequest().getReader(url))
+                    new HttpRequest(this.updateTimeOut).getReader(url))
                     .update();
         } catch (Exception e) {
             Logger.getLogger(Application.class).error(e);
