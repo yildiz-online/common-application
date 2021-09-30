@@ -15,7 +15,7 @@ services:
   - docker
 
 before_install:
-  - docker pull moussavdb/build-java
+  - docker pull moussavdb/build-java:17
 
 script:
-  - travis_retry docker run -v $PWD:/src -v $HOME/.m2:/root/.m2 -e BRANCH=$TRAVIS_BRANCH -e VAULT_TOKEN=$VAULT_TOKEN moussavdb/build-java
+  - travis_retry docker run -v $PWD:/src -v $HOME/.m2:/root/.m2 -e BRANCH=$TRAVIS_BRANCH -e VAULT_TOKEN=$VAULT_TOKEN moussavdb/build-java17
