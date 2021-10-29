@@ -138,6 +138,11 @@ public class Application {
         return this;
     }
 
+    /**
+     * Add a line to the banner.
+     * @param line Line to add.
+     * @return This object for chaining.
+     */
     public final Application addBannerLine(BannerLine line) {
         this.banner.addLine(line);
         return this;
