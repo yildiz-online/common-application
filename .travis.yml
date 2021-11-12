@@ -1,11 +1,10 @@
-sudo: required
-
 language: generic
 
 git:
   depth: false
 
-dist: xenial
+os: linux
+dist: focal
 
 cache:
   directories:
