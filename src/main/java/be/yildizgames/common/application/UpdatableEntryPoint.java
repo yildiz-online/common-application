@@ -23,7 +23,7 @@ import java.util.Properties;
  */
 public abstract class UpdatableEntryPoint implements Launcher {
 
-    public UpdatableEntryPoint() {
+    protected UpdatableEntryPoint() {
         super();
     }
 

@@ -53,8 +53,8 @@ public class SystemRestarter {
             StringBuilder cmd = new StringBuilder();
             cmd
                     .append(javaPath)
-                    .append("java ")
-                    .append("-jar " + app);
+                    .append("java ").append("-jar ")
+                    .append(app);
             Thread.sleep(msBeforeRestart);
             Runtime.getRuntime().exec(cmd.toString());
             System.exit(0);
