@@ -15,7 +15,7 @@ package be.yildizgames.common.application.helper.splashscreen;
 /**
  * @author Grégory Van den Borre
  */
-public class EmptySplashScreen implements SplashScreen {
+public class EmptySplashScreen extends UpdateSplashScreen {
 
     public EmptySplashScreen() {
         super();
@@ -33,6 +33,16 @@ public class EmptySplashScreen implements SplashScreen {
 
     @Override
     public void setName(String name) {
+        //Does nothing.
+    }
+
+    @Override
+    public void setProgress(int percent) {
+        //Does nothing.
+    }
+
+    @Override
+    public void setCurrentLoading(String name) {
         //Does nothing.
     }
 }

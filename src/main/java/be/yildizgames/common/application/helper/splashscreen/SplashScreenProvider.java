@@ -12,11 +12,13 @@
 
 package be.yildizgames.common.application.helper.splashscreen;
 
+import java.util.Properties;
+
 /**
  * @author Grégory Van den Borre
  */
 public interface SplashScreenProvider {
 
-    SplashScreen buildSplashScreen();
+    UpdateSplashScreen buildSplashScreen(Properties properties);
 
 }

@@ -27,8 +27,9 @@ import be.yildizgames.common.application.helper.cli.Banner;
 import be.yildizgames.common.application.helper.cli.BannerLine;
 import be.yildizgames.common.application.helper.logging.LoggerPropertiesConsoleFile;
 import be.yildizgames.common.application.helper.splashscreen.EmptySplashScreen;
-import be.yildizgames.common.application.helper.splashscreen.SplashScreen;
 import be.yildizgames.common.application.helper.splashscreen.SplashScreenProvider;
+import be.yildizgames.common.application.helper.splashscreen.UpdateSplashScreen;
+import be.yildizgames.common.application.helper.updater.UpdateHelper;
 import be.yildizgames.common.configuration.ConfigurationNotFoundAdditionalBehavior;
 import be.yildizgames.common.configuration.ConfigurationNotFoundDefault;
 import be.yildizgames.common.configuration.ConfigurationRetriever;
@@ -38,12 +39,11 @@ import be.yildizgames.common.git.GitProperties;
 import be.yildizgames.common.git.GitPropertiesProvider;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
-import be.yildizgames.common.logging.Logger;
 import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
-import be.yildizgames.module.http.HttpRequest;
-import org.update4j.Configuration;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -84,12 +84,12 @@ public class Application {
     /**
      * Build the splashscreen, never null.
      */
-    private SplashScreenProvider splashScreenProvider = EmptySplashScreen::new;
+    private SplashScreenProvider splashScreenProvider = p -> new EmptySplashScreen();
 
     /**
      * Splashscreen, built in init function.
      */
-    private SplashScreen splashScreen;
+    private UpdateSplashScreen splashScreen;
 
     /**
      * Constructor, private to force using the static function start instead.
@@ -227,19 +227,13 @@ public class Application {
         GitProperties git = GitPropertiesProvider.getGitProperties();
         logger.log(System.Logger.Level.INFO, "Commit: {0}", git.getCommitId());
         logger.log(System.Logger.Level.INFO, "Built at {0}", git.getBuildTime());
-        this.splashScreen = this.splashScreenProvider.buildSplashScreen();
+        this.splashScreen = this.splashScreenProvider.buildSplashScreen(this.properties);
         this.splashScreen.setName(this.applicationName);
         this.splashScreen.display();
         Optional.ofNullable(this.updateUrl).ifPresent(this::update);
     }
 
     private void update(String url) {
-        try {
-            Configuration.read(
-                    new HttpRequest(this.updateTimeOut).getReader(url))
-                    .update();
-        } catch (Exception e) {
-            Logger.getLogger(Application.class).error(e);
-        }
+        new UpdateHelper().update(url, "temp", Duration.ofMinutes(5), this.updateTimeOut, List.of(this.splashScreen));
     }
 }

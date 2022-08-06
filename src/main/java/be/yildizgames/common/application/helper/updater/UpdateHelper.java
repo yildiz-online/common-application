@@ -40,11 +40,11 @@ public class UpdateHelper {
         super();
     }
 
-    public void update(String url, String archiveName, TemporalAmount delay, List<UpdateDownloadListener> listener) {
+    public void update(String url, String archiveName, TemporalAmount delay, int timeout, List<UpdateDownloadListener> listener) {
         var now = LocalDateTime.now();
         if (!this.lastUpdate.containsKey(url) || now.isAfter(this.lastUpdate.computeIfAbsent(url, a -> now).plus(delay))) {
             try {
-                var config = Configuration.read(new HttpRequest().getReader(url));
+                var config = Configuration.read(new HttpRequest(timeout).getReader(url));
                 if (config.requiresUpdate()) {
                     config.update(
                             UpdateOptions

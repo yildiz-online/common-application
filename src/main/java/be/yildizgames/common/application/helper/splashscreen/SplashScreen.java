@@ -22,4 +22,8 @@ public interface SplashScreen {
     void close();
 
     void setName(String name);
+
+    void setProgress(int percent);
+
+    void setCurrentLoading(String name);
 }
