@@ -51,6 +51,8 @@ public class UpdateHelper {
                                     .archive(Path.of(archiveName))
                                     .updateHandler(new UpdateHandlerNotifier(listener)));
                     Archive.read(archiveName).install(true);
+                } else {
+                    listener.forEach(UpdateDownloadListener::fileUpToDate);
                 }
                 this.lastUpdate.put(url, now);
             } catch (IOException e) {

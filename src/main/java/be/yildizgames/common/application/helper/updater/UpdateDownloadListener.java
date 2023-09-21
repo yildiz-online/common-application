@@ -19,6 +19,8 @@ import java.nio.file.Path;
  */
 public interface UpdateDownloadListener {
 
+    default void fileUpToDate(){}
+
     default void fileUpdated(Path file, int percent){}
 
     default void fileCompletedSuccessfully(Path file){}
