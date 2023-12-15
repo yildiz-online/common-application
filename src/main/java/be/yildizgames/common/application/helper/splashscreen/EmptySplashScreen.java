@@ -23,6 +23,9 @@ package be.yildizgames.common.application.helper.splashscreen;
  */
 public class EmptySplashScreen extends UpdateSplashScreen {
 
+    /**
+     * Creates a new empty splash screen.
+     */
     public EmptySplashScreen() {
         super();
     }
