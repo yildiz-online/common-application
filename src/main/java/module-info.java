@@ -13,6 +13,10 @@
  *  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+/**
+ * Modules for the common application.
+ * @author Grégory Van den Borre
+ */
 open module be.yildizgames.common.application {
 
     requires be.yildizgames.common.logging;
