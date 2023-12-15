@@ -15,26 +15,67 @@ package be.yildizgames.common.application.helper.updater;
 import java.nio.file.Path;
 
 /**
+ * Listener for download update events.
+ *
  * @author Grégory Van den Borre
  */
 public interface UpdateDownloadListener {
 
-    default void fileUpToDate(){}
+    /**
+     * Called when a file is determined to already be up to date.
+     */
+    default void fileUpToDate() {
+    }
 
-    default void fileUpdated(Path file, int percent){}
+    /**
+     * Called when the file download percentage is updated.
+     *
+     * @param file    the file currently downloaded.
+     * @param percent the new percentage
+     */
+    default void fileUpdated(Path file, int percent) {
+    }
 
-    default void fileCompletedSuccessfully(Path file){}
+    /**
+     * Called when a file download completes successfully.
+     *
+     * @param file the completed file
+     */
+    default void fileCompletedSuccessfully(Path file) {
+    }
 
-    default void downloadCompletedSuccessfully(){}
+    /**
+     * Called when the entire download completes successfully.
+     */
+    default void downloadCompletedSuccessfully() {
+    }
 
-    default void downloadUpdated(int percent){}
+    /**
+     * Called when the overall download percentage is updated.
+     *
+     * @param percent the new percentage
+     */
+    default void downloadUpdated(int percent) {
+    }
 
+    /**
+     * Called when downloads are started.
+     */
     default void startDownloads() {
     }
 
+    /**
+     * Called when the entire download completes.
+     */
     default void completed() {
     }
 
-    default void startDownloadFile(Path file) {}
+    /**
+     * Called when a file download is started.
+     *
+     * @param file the file path
+     */
+    default void startDownloadFile(Path file) {
+    }
 }
 

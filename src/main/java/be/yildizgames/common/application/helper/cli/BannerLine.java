@@ -13,10 +13,18 @@
 package be.yildizgames.common.application.helper.cli;
 
 /**
+ * Represents an additional line that can be added to a banner.
+ * <p>A banner line knows how to print itself as a string.</p>
+ *
  * @author Grégory Van den Borre
  */
 @FunctionalInterface
 public interface BannerLine {
 
+    /**
+     * Prints this banner line as a string.
+     *
+     * @return the string representation of this banner line
+     */
     String print();
 }

@@ -13,9 +13,16 @@
 package be.yildizgames.common.application.helper.network;
 
 /**
+ * Defines a contract for checking the availability of a network resource.
+ *
  * @author Grégory Van den Borre
  */
 public interface AvailabilityChecker {
 
+    /**
+     * Checks if the target resource is available online.
+     *
+     * @return true if the target resource is available, false otherwise.
+     */
     boolean isOnline();
 }

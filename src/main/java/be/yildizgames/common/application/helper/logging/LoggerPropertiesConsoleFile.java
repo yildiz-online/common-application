@@ -17,10 +17,17 @@ import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
 import java.util.Properties;
 
 /**
+ * Provides a set of default logging properties for console output and a file.
+ *
  * @author Grégory Van den Borre
  */
 public class LoggerPropertiesConsoleFile extends Properties {
 
+    /**
+     * Creates a new properties object with default logging values.
+     *
+     * @param applicationName the name of the application to include in the log file.
+     */
     public LoggerPropertiesConsoleFile(String applicationName) {
         super();
         this.setProperty(LoggerPropertiesConfiguration.LOGGER_LEVEL_KEY, "INFO");
@@ -30,6 +37,6 @@ public class LoggerPropertiesConsoleFile extends Properties {
         this.setProperty(LoggerPropertiesConfiguration.LOGGER_TCP_PORT_KEY, "60000");
         this.setProperty(LoggerPropertiesConfiguration.LOGGER_FILE_OUTPUT_KEY, "logs/" + applicationName + ".log");
         this.setProperty(LoggerPropertiesConfiguration.LOGGER_CONFIGURATION_FILE_KEY, "logback.xml");
-        this.setProperty(LoggerPropertiesConfiguration.LOGGER_DISABLED_KEY,"org.hsqldb.persist.Logger,hsqldb.db,jdk.internal.httpclient.debug,jdk.event.security,javafx.scene.focus,com.sun.webkit.perf.WCFontPerfLogger.TOTALTIME");
+        this.setProperty(LoggerPropertiesConfiguration.LOGGER_DISABLED_KEY, "org.hsqldb.persist.Logger,hsqldb.db,jdk.internal.httpclient.debug,jdk.event.security,javafx.scene.focus,com.sun.webkit.perf.WCFontPerfLogger.TOTALTIME");
     }
 }

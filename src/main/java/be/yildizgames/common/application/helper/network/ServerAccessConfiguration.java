@@ -13,9 +13,16 @@
 package be.yildizgames.common.application.helper.network;
 
 /**
+ * Defines a configuration for accessing a server.
+ *
  * @author Grégory Van den Borre
  */
 public interface ServerAccessConfiguration {
 
+    /**
+     * Gets the URL of the server.
+     *
+     * @return the server URL.
+     */
     String getServerUrl();
 }

@@ -17,20 +17,35 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
+ * Checks server availability by connecting to the server via a socket.
+ *
  * @author Grégory Van den Borre
  */
 class SocketPingCheck {
 
+    /**
+     * The server access configuration.
+     */
     private final ServerAccessConfiguration configuration;
 
+    /**
+     * Creates a new checker with the given configuration.
+     *
+     * @param configuration the server configuration
+     */
     SocketPingCheck(ServerAccessConfiguration configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * Attempts to connect to the server via a socket.
+     *
+     * @return true if the connection succeeds, false otherwise
+     */
     final boolean respond() {
-        String host = configuration.getServerUrl().replace("http://", "").split(":")[0];
+        var host = configuration.getServerUrl().replace("http://", "").split(":")[0];
         int port = Integer.parseInt(configuration.getServerUrl().replace("http://", "").split(":")[1].replace("/", ""));
-        try (Socket socket = new Socket()) {
+        try (var socket = new Socket()) {
             socket.connect(new InetSocketAddress(host, port), 5000);
             return true;
         } catch (IOException e) {

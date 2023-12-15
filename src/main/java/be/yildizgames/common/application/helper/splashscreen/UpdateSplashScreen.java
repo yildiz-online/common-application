@@ -31,31 +31,36 @@ import be.yildizgames.common.application.helper.updater.UpdateDownloadListener;
 import java.nio.file.Path;
 
 /**
+ * Base splash screen implementation that supports updating progress.
+ *
  * @author Grégory Van den Borre
  */
 public abstract class UpdateSplashScreen implements SplashScreen, UpdateDownloadListener {
 
+    /**
+     * Creates a new update splash screen.
+     */
     protected UpdateSplashScreen() {
         super();
     }
 
     @Override
-    public void fileUpdated(Path file, int percent) {
+    public final void fileUpdated(Path file, int percent) {
         UpdateDownloadListener.super.fileUpdated(file, percent);
     }
 
     @Override
-    public void downloadUpdated(int percent) {
+    public final void downloadUpdated(int percent) {
         this.setProgress(percent);
     }
 
     @Override
-    public void completed() {
+    public final void completed() {
         this.close();
     }
 
     @Override
-    public void startDownloadFile(Path file) {
+    public final void startDownloadFile(Path file) {
         this.setCurrentLoading(file.getFileName().toString());
     }
 }

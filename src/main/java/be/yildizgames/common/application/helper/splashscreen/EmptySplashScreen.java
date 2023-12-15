@@ -13,6 +13,9 @@
 package be.yildizgames.common.application.helper.splashscreen;
 
 /**
+ * A splash screen implementation that does nothing.
+ * Used when no splash screen is needed.
+ *
  * @author Grégory Van den Borre
  */
 public class EmptySplashScreen extends UpdateSplashScreen {
@@ -22,27 +25,27 @@ public class EmptySplashScreen extends UpdateSplashScreen {
     }
 
     @Override
-    public void display() {
+    public final void display() {
         //Does nothing.
     }
 
     @Override
-    public void close() {
+    public final void close() {
         //Does nothing.
     }
 
     @Override
-    public void setName(String name) {
+    public final void setName(String name) {
         //Does nothing.
     }
 
     @Override
-    public void setProgress(int percent) {
+    public final void setProgress(int percent) {
         //Does nothing.
     }
 
     @Override
-    public void setCurrentLoading(String name) {
+    public final void setCurrentLoading(String name) {
         //Does nothing.
     }
 }

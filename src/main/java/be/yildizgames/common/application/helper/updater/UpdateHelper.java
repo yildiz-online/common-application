@@ -30,17 +30,34 @@ import java.util.Map;
 
 
 /**
+ * Handles checking for and applying updates.
+ *
  * @author Grégory Van den Borre
  */
 public class UpdateHelper {
 
+    /**
+     * A map of last update times by URL.
+     */
     private final Map<String, LocalDateTime> lastUpdate = new HashMap<>();
 
+    /**
+     * Creates a new update helper.
+     */
     public UpdateHelper() {
         super();
     }
 
-    public void update(String url, String archiveName, TemporalAmount delay, int timeout, List<UpdateDownloadListener> listener) {
+    /**
+     * Checks for and applies any available updates.
+     *
+     * @param url         the update URL
+     * @param archiveName the archive file name
+     * @param delay       minimum delay between checks
+     * @param timeout     HTTP timeout
+     * @param listener    event listeners
+     */
+    public final void update(String url, String archiveName, TemporalAmount delay, int timeout, List<UpdateDownloadListener> listener) {
         var now = LocalDateTime.now();
         if (!this.lastUpdate.containsKey(url) || now.isAfter(this.lastUpdate.computeIfAbsent(url, a -> now).plus(delay))) {
             try {
@@ -61,10 +78,21 @@ public class UpdateHelper {
         }
     }
 
+    /**
+     * Notifies update listeners of events during the download process.
+     */
     private static class UpdateHandlerNotifier implements UpdateHandler {
 
+        /**
+         * The list of update listeners.
+         */
         private final List<UpdateDownloadListener> listener;
 
+        /**
+         * Creates a new notifier with the given listeners.
+         *
+         * @param listener the list of listeners
+         */
         private UpdateHandlerNotifier(final List<UpdateDownloadListener> listener) {
             this.listener = listener;
         }

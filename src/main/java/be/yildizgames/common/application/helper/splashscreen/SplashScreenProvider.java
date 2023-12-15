@@ -15,10 +15,18 @@ package be.yildizgames.common.application.helper.splashscreen;
 import java.util.Properties;
 
 /**
+ * Provides implementations of splash screens.
+ *
  * @author Grégory Van den Borre
  */
 public interface SplashScreenProvider {
 
+    /**
+     * Builds a splash screen implementation using the given properties.
+     *
+     * @param properties the configuration properties
+     * @return the splash screen implementation
+     */
     UpdateSplashScreen buildSplashScreen(Properties properties);
 
 }

@@ -13,52 +13,102 @@
 package be.yildizgames.common.application.helper.network;
 
 /**
+ * Checks the availability of a network resource using socket connections.
+ *
  * @author Grégory Van den Borre
  */
 public class SocketAvailabilityChecker implements AvailabilityChecker {
 
+    /**
+     * The delay in milliseconds between availability checks.
+     */
     private static final long DELAY = 60000L;
 
+    /**
+     * The timestamp of the last availability check.
+     */
     private long lastCheck = 0;
 
-    private AvailabilityStatus current;
+    /**
+     * The current connection status.
+     */
+    private ConnectionStatus current;
 
+    /**
+     * Handles the socket connection check.
+     */
     private final SocketPingCheck checker;
 
+    /**
+     * Creates a new checker with the given server configuration.
+     *
+     * @param configuration the server access configuration
+     */
     public SocketAvailabilityChecker(ServerAccessConfiguration configuration) {
         this.checker = new SocketPingCheck(configuration);
     }
 
-    private AvailabilityStatus respond() {
-        if (this.current == AvailabilityStatus.CHECKING) {
-            return current;
+    /**
+     * Responds to an availability check request.
+     *
+     * @return the availability status.
+     */
+    private ConnectionStatus respond() {
+        if (this.current == ConnectionStatus.CHECKING) {
+            return this.current;
         }
         var now = System.currentTimeMillis();
-        if (now - lastCheck < DELAY) {
-            return current;
+        if (now - this.lastCheck < DELAY) {
+            return this.current;
         }
-        this.current = AvailabilityStatus.CHECKING;
-        this.current = this.checker.respond() ? AvailabilityStatus.ONLINE : AvailabilityStatus.OFFLINE;
-        lastCheck = now;
-        return current;
+        this.current = ConnectionStatus.CHECKING;
+        this.current = this.checker.respond() ? ConnectionStatus.ONLINE : ConnectionStatus.OFFLINE;
+        this.lastCheck = now;
+        return this.current;
     }
 
     @Override
-    public boolean isOnline() {
-        return this.respond().equals(AvailabilityStatus.ONLINE);
+    public final boolean isOnline() {
+        return this.respond().equals(ConnectionStatus.ONLINE);
     }
 
-    public boolean isChecking() {
-        return this.respond().equals(AvailabilityStatus.CHECKING);
+    /**
+     * Checks if the availability status is currently checking.
+     *
+     * @return true if checking availability, false otherwise
+     */
+    public final boolean isChecking() {
+        return this.respond().equals(ConnectionStatus.CHECKING);
     }
 
+    /**
+     * Checks if the target resource is currently reported as offline.
+     *
+     * @return true if offline, false otherwise
+     */
     public final boolean isOffLine() {
-        return this.respond().equals(AvailabilityStatus.OFFLINE);
+        return this.respond().equals(ConnectionStatus.OFFLINE);
     }
 
-    private enum AvailabilityStatus {
+    /**
+     * The possible availability statuses.
+     */
+    private enum ConnectionStatus {
 
-        CHECKING, ONLINE, OFFLINE
+        /**
+         * Checking the availability.
+         */
+        CHECKING,
+
+        /**
+         * Available online.
+         */
+        ONLINE,
+
+        /**
+         * Unavailable offline.
+         */
+        OFFLINE
 
     }
 }

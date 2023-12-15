@@ -19,10 +19,15 @@ import org.update4j.service.Launcher;
 import java.util.Properties;
 
 /**
+ * Base class for application entry points that support updating.
+ *
  * @author Grégory Van den Borre
  */
 public abstract class UpdatableEntryPoint implements Launcher {
 
+    /**
+     * Creates a new entry point.
+     */
     protected UpdatableEntryPoint() {
         super();
     }
@@ -32,6 +37,11 @@ public abstract class UpdatableEntryPoint implements Launcher {
         launch(new String[]{});
     }
 
+    /**
+     * Launches the application by initializing common components.
+     *
+     * @param args the command line arguments
+     */
     protected final void launch(String[] args) {
         Application.prepare(getApplicationName())
                 .withConfiguration(args, getDefaultConfiguration())
@@ -40,13 +50,38 @@ public abstract class UpdatableEntryPoint implements Launcher {
                 .start(getStarter());
     }
 
+    /**
+     * Provide the name of the application.
+     *
+     * @return The application name.
+     */
     protected abstract String getApplicationName();
 
+    /**
+     * Provide the url to call to get the update manifest.
+     *
+     * @return The update manifest.
+     */
     protected abstract String getUpdateUrl();
 
+    /**
+     * Provide the starter.
+     *
+     * @return The starter.
+     */
     protected abstract Starter getStarter();
 
+    /**
+     * Provide the splash screen.
+     *
+     * @return The splash screen.
+     */
     protected abstract SplashScreenProvider getSplashScreen();
 
+    /**
+     * Provide the default configuration properties.
+     *
+     * @return The default configuration properties.
+     */
     protected abstract Properties getDefaultConfiguration();
 }

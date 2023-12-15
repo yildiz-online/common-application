@@ -25,19 +25,36 @@
 package be.yildizgames.common.application.helper.cli;
 
 /**
+ * Utility class for measuring and displaying elapsed time between operations.
+ *
  * @author Grégory Van den Borre
  */
 public class PerformanceChecker {
 
+    /**
+     * The timestamp of when this instance was created or the last measurement was taken.
+     */
     private long now = System.currentTimeMillis();
 
+    /**
+     * Creates a new PerformanceChecker instance.
+     */
     public PerformanceChecker() {
         super();
     }
 
-    public void displayTimeElapsed(String label) {
-        long l = System.currentTimeMillis();
-        Terminal.println("Time elapsed for " + label + " " +  (l - now) + "ms.");
-        now = l;
+    /**
+     * Displays the elapsed time since construction or the last call in milliseconds.
+     *
+     * @param label label to display along with the elapsed time.
+     */
+    public final void displayTimeElapsed(final String label) {
+        var l = System.currentTimeMillis();
+        if (label == null || label.isEmpty()) {
+            Terminal.println("Time elapsed " + (l - this.now) + "ms.");
+        } else {
+            Terminal.println("Time elapsed for " + label + " " + (l - this.now) + "ms.");
+        }
+        this.now = l;
     }
 }

@@ -29,24 +29,45 @@ import java.util.Objects;
 import java.util.Properties;
 
 /**
+ * Base class for application starters.
+ *
  * @author Grégory Van den Borre
  */
 public abstract class Starter {
 
+    /**
+     * The application instance.
+     */
     private Application application;
 
+    /**
+     * Creates a new starter.
+     */
     protected Starter() {
         super();
     }
 
+    /**
+     * Sets the application instance.
+     *
+     * @param application the application
+     */
     final void setApplication(Application application) {
         this.application = Objects.requireNonNull(application);
     }
 
+    /**
+     * Gets the application configuration properties.
+     *
+     * @return the properties
+     */
     protected final Properties getApplicationProperties() {
         return this.application.getConfiguration();
     }
 
+    /**
+     * Starts the application and logs any errors.
+     */
     void startLoggedErrors() {
         try {
             this.start();
@@ -56,6 +77,9 @@ public abstract class Starter {
         }
     }
 
+    /**
+     * Starts the application.
+     */
     public abstract void start();
 
 }

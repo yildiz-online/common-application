@@ -37,7 +37,6 @@ import be.yildizgames.common.configuration.ConfigurationRetrieverFactory;
 import be.yildizgames.common.configuration.parameter.ApplicationArgs;
 import be.yildizgames.common.git.GitProperties;
 import be.yildizgames.common.git.GitPropertiesProvider;
-import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.LoggerPropertiesConfiguration;
 
@@ -51,10 +50,11 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 /**
- * This class will:
- * Configure any new application (logger,...).
- * Display a banner.
- * Manage application update.
+ * Main application class.
+ * This class is responsible for:
+ * Configuring the application (logging, etc)
+ * Displaying a banner on startup
+ * Managing application updates
  *
  * @author Grégory Van den Borre
  */
@@ -66,14 +66,23 @@ public class Application {
     private final String applicationName;
 
     /**
-     * Url to upade, null value will prevent to try to update.
+     * Url to update, null value will prevent to try to update.
      */
     private String updateUrl;
 
+    /**
+     * Timeout for the update connection, -1 means no timeout.
+     */
     private int updateTimeOut = -1;
 
+    /**
+     * Properties to store the application configuration.
+     */
     private Properties properties = new Properties();
 
+    /**
+     * Flag to check if application is started or not.
+     */
     private boolean started;
 
     /**
@@ -93,6 +102,7 @@ public class Application {
 
     /**
      * Constructor, private to force using the static function start instead.
+     *
      * @param applicationName Name of the application.
      */
     private Application(final String applicationName) {
@@ -100,21 +110,38 @@ public class Application {
         shutThirdPartyLogger();
         this.applicationName = Objects.requireNonNull(applicationName);
         this.banner = new Banner(applicationName);
-        if(applicationName.isEmpty()) {
+        if (applicationName.isEmpty()) {
             throw new IllegalArgumentException("Application name cannot be empty");
         }
     }
 
+    /**
+     * Prevent to display the 3rd parties loggers.
+     */
     private static void shutThirdPartyLogger() {
         var databaseLogger = java.util.logging.Logger.getLogger("hsqldb.db");
         databaseLogger.setUseParentHandlers(false);
         databaseLogger.setLevel(java.util.logging.Level.WARNING);
     }
 
+    /**
+     * Prepare to start the application.
+     *
+     * @param applicationName Application name.
+     * @return The application.
+     */
     public static Application prepare(String applicationName) {
         return new Application(applicationName);
     }
 
+    /**
+     * Add configuration to the application.
+     *
+     * @param args          Arguments to override the configuration.
+     * @param defaultConfig Default configuration to use for values not provided.
+     * @param behavior      Behavior to run if not configuration is provided.
+     * @return The application.
+     */
     public final Application withConfiguration(String[] args, Properties defaultConfig, ConfigurationNotFoundAdditionalBehavior behavior) {
         ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory
                 .fromFile(ConfigurationNotFoundDefault.fromDefault(Stream.of(new LoggerPropertiesConsoleFile(applicationName), defaultConfig)
@@ -125,14 +152,21 @@ public class Application {
 
     /**
      * To set a custom banner, the banner will be displayed in the console interface when starting the application.
+     *
      * @param banner Custom banner to set.
-     * @return This object for chaining.
+     * @return The application.
      */
     public final Application withBanner(Banner banner) {
         this.banner = Objects.requireNonNull(banner);
         return this;
     }
 
+    /**
+     * Set a splash screen to display when starting the application.
+     *
+     * @param splashScreen Splash screen to display.
+     * @return The application.
+     */
     public final Application withSplashScreen(SplashScreenProvider splashScreen) {
         this.splashScreenProvider = Objects.requireNonNull(splashScreen);
         return this;
@@ -140,28 +174,45 @@ public class Application {
 
     /**
      * Add a line to the banner.
+     *
      * @param line Line to add.
-     * @return This object for chaining.
+     * @return The application.
      */
     public final Application addBannerLine(BannerLine line) {
         this.banner.addLine(line);
         return this;
     }
 
+    /**
+     * Add configuration to the application.
+     *
+     * @param args          Arguments to override the configuration.
+     * @param defaultConfig Default configuration to use for values not provided.
+     * @return The application.
+     */
     public final Application withConfiguration(String[] args, Properties defaultConfig) {
-        return this.withConfiguration(args, defaultConfig, () -> {});
+        return this.withConfiguration(args, defaultConfig, () -> {
+        });
     }
 
     /**
      * Provide the update mechanism.
+     *
      * @param url Url to call to get the update manifest.
-     * @return This object for chaining.
+     * @return The application.
      */
     public final Application withUpdate(String url) {
         this.updateUrl = Objects.requireNonNull(url);
         return this;
     }
 
+    /**
+     * Provide the update mechanism.
+     *
+     * @param url     Url to call to get the update manifest.
+     * @param timeout Timeout for the update connection.
+     * @return The application.
+     */
     public final Application withUpdate(String url, int timeout) {
         this.updateUrl = Objects.requireNonNull(url);
         this.updateTimeOut = timeout;
@@ -170,10 +221,11 @@ public class Application {
 
     /**
      * Initialize and start the application.
-     * @return This object for chaining.
+     *
+     * @return The application.
      */
     public final Application start() {
-        if(this.started) {
+        if (this.started) {
             return this;
         }
         try {
@@ -188,11 +240,12 @@ public class Application {
     /**
      * Initialize and start the application by using a starter.
      * Provide support to log all uncaught exceptions.
+     *
      * @param starter Starting application.
-     * @return This object for chaining.
+     * @return The application.
      */
     public final Application start(final Starter starter) {
-        if(this.started) {
+        if (this.started) {
             return this;
         }
         try {
@@ -214,12 +267,20 @@ public class Application {
         this.splashScreen.close();
     }
 
+    /**
+     * Get the application configuration.
+     * @return The configuration properties.
+     */
     public final Properties getConfiguration() {
         return this.properties;
     }
 
+    /**
+     * Initialize the application before starting.
+     * @throws IOException If something wrong occurs.
+     */
     private void init() throws IOException {
-        LogEngine logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
+        var logEngine = LogEngineProvider.getLoggerProvider().getLogEngine();
         logEngine.configureFromProperties(LoggerPropertiesConfiguration.fromProperties(this.properties));
         System.Logger logger = System.getLogger(Application.class.getName());
         this.banner.display();
@@ -233,6 +294,10 @@ public class Application {
         Optional.ofNullable(this.updateUrl).ifPresent(this::update);
     }
 
+    /**
+     * Update the application.
+     * @param url Url to call to get the update manifest.
+     */
     private void update(String url) {
         new UpdateHelper().update(url, "temp", Duration.ofMinutes(5), this.updateTimeOut, List.of(this.splashScreen));
     }

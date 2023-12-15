@@ -33,7 +33,7 @@ import java.net.InetAddress;
 public class NetworkInterface {
 
     /**
-     * Cached value to avoid to have to create the socker more than once.
+     * Cached value to avoid to have to create the socket more than once.
      */
     private static String address;
 

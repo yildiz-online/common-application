@@ -13,17 +13,40 @@
 package be.yildizgames.common.application.helper.splashscreen;
 
 /**
+ * Defines a splash screen that can be displayed during application launch.
+ *
  * @author Grégory Van den Borre
  */
 public interface SplashScreen {
 
+    /**
+     * Displays the splash screen.
+     */
     void display();
 
+    /**
+     * Closes the splash screen.
+     */
     void close();
 
+    /**
+     * Sets the name to display on the splash screen.
+     *
+     * @param name the name to display
+     */
     void setName(String name);
 
+    /**
+     * Sets the loading progress percentage to display.
+     *
+     * @param percent the progress percentage
+     */
     void setProgress(int percent);
 
+    /**
+     * Sets the current loading task name to display.
+     *
+     * @param name the current loading task
+     */
     void setCurrentLoading(String name);
 }
