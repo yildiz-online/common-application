@@ -16,53 +16,20 @@
 
 package be.yildizgames.common.application.helper.restarter;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 /**
- * Handles restarting the application process.
- *
+ * Handles restarting the application.
  * @author Grégory Van den Borre
  */
-public class Restarter {
+public interface Restarter {
 
     /**
-     * The executable to use on Windows.
+     * Restarts the application process immediately.
      */
-    private final String windowExecutable;
+    void restart();
 
     /**
-     * The executable to use on Linux.
+     * Restarts the application process after a delay.
+     * @param msBeforeRestart Delay before restarting in ms.
      */
-    private final String linuxExecutable;
-
-    /**
-     * Constructs a Restarter with the executables.
-     *
-     * @param windowExecutable Name of the Windows executable file.
-     * @param linuxExecutable  Name of the Linux executable file.
-     */
-    public Restarter(String windowExecutable, String linuxExecutable) {
-        super();
-        this.windowExecutable = windowExecutable;
-        this.linuxExecutable = linuxExecutable;
-    }
-
-    /**
-     * Restarts the application process.
-     * Restarts the application by executing the appropriate executable
-     * based on the current operating system.
-     */
-    public final void restart() {
-        String[] command = {Path.of("").toAbsolutePath().resolve(System.getProperty("os.name").equals("Windows") ? this.windowExecutable : this.linuxExecutable).toString()};
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                Runtime.getRuntime().exec(command);
-            } catch (IOException e) {
-                System.getLogger(Restarter.class.getName()).log(System.Logger.Level.ERROR, "Cannot restart.", e);
-                throw new IllegalArgumentException(e);
-            }
-        }));
-        System.exit(0);
-    }
+    void restart(long msBeforeRestart);
 }
