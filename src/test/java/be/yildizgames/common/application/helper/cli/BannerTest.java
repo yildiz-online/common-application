@@ -47,9 +47,26 @@ class BannerTest {
         Banner banner = new Banner("test");
         banner.display();
         Assertions.assertEquals(
-                "********************************************************************************" + System.lineSeparator()
+                 "********************************************************************************" + System.lineSeparator()
                         + "*                                                                              *" + System.lineSeparator()
                         + "*                                     test                                     *" + System.lineSeparator()
+                        + "*                                                                              *" + System.lineSeparator()
+                        + "*   Powered by Yildiz-Engine                                                   *" + System.lineSeparator()
+                        + "*                                             https://engine.yildiz-games.be   *" + System.lineSeparator()
+                        + "*                                                                              *" + System.lineSeparator()
+                        + "********************************************************************************" + System.lineSeparator(),
+
+                outContent.toString());
+    }
+
+    @Test
+    void notEven() {
+        Banner banner = new Banner("123");
+        banner.display();
+        Assertions.assertEquals(
+                 "********************************************************************************" + System.lineSeparator()
+                        + "*                                                                              *" + System.lineSeparator()
+                        + "*                                     123                                      *" + System.lineSeparator()
                         + "*                                                                              *" + System.lineSeparator()
                         + "*   Powered by Yildiz-Engine                                                   *" + System.lineSeparator()
                         + "*                                             https://engine.yildiz-games.be   *" + System.lineSeparator()

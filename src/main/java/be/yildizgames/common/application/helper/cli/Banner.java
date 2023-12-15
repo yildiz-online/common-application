@@ -22,55 +22,92 @@ import java.util.stream.Stream;
 /**
  * A banner to display at the startup of the application in the terminal.
  * This will not be displayed in logs.
+ *
  * @author Grégory Van den Borre
  */
 public class Banner {
 
+    /**
+     * The length of each line in the banner.
+     */
     private static final int LINE_LENGTH = 80;
 
     private static final String BORDER_LINE = "*".repeat(LINE_LENGTH);
 
-    private static final String SIDE_LINE =   "*" + " ".repeat(LINE_LENGTH - 2) + "*";
+    private static final String SIDE_LINE = "*" + " ".repeat(LINE_LENGTH - 2) + "*";
 
+    /**
+     * The application name for this banner.
+     */
     private final String appName;
 
+    /**
+     * Lines of text that have been directly added to the banner.
+     */
     private final List<String> lines = new ArrayList<>();
 
+    /**
+     * Additional banner lines that have been added.
+     */
     private final List<BannerLine> addedLines = new ArrayList<>();
 
+    /**
+     * Creates a new banner with the given application name.
+     *
+     * @param appName the name of the application
+     */
     public Banner(String appName) {
         this.appName = appName;
         this.addLines();
     }
 
-    public void addLine(BannerLine line) {
+    /**
+     * Adds a line of text to the banner.
+     *
+     * @param line the text to add
+     */
+    public final void addLine(BannerLine line) {
         this.addedLines.add(line);
     }
 
-    public void fromFile(Path path) {
+    /**
+     * Loads lines of text from the given file path.
+     *
+     * @param path the path to load lines from
+     */
+    public final void fromFile(Path path) {
         this.lines.clear();
         try (Stream<String> content = Files.lines(path)) {
             content.forEach(this.lines::add);
         } catch (IOException e) {
             Terminal.println(e.toString());
             this.addLines();
-            lines.add("*-- ERROR reading file: " + path);
+            this.lines.add("*-- ERROR reading file: " + path);
         }
     }
 
+    /**
+     * Adds a banner line to the additional lines.
+     *
+     * @param line the line to add
+     */
     private void addLines() {
         this.lines.add(BORDER_LINE);
         this.lines.add(SIDE_LINE);
-        int start = ((LINE_LENGTH - 2) - appName.length()) >> 1;
-        this.lines.add("*" + " ".repeat(start) + appName + " ".repeat(start) + "*");
+        int start = ((LINE_LENGTH - 2) - this.appName.length()) >> 1;
+        var l = "*" + " ".repeat(start) + this.appName;
+        this.lines.add(l + " ".repeat(LINE_LENGTH - l.length() - 1) + "*");
         this.lines.add(SIDE_LINE);
-        String s = "*   Powered by Yildiz-Engine";
+        var s = "*   Powered by Yildiz-Engine";
         this.lines.add(s + " ".repeat(LINE_LENGTH - s.length() - 1) + "*");
-        String e = "https://engine.yildiz-games.be   *";
+        var e = "https://engine.yildiz-games.be   *";
         this.lines.add("*" + " ".repeat(LINE_LENGTH - e.length() - 1) + e);
     }
 
-    public void display() {
+    /**
+     * Displays the banner in the terminal.
+     */
+    public final void display() {
         this.lines.forEach(Terminal::println);
         this.addedLines.forEach(l -> Terminal.println(l.print()));
         Terminal.println(SIDE_LINE);
