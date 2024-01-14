@@ -38,7 +38,7 @@
   </parent>
 
   <artifactId>common-application</artifactId>
-  <version>1.4.5-SNAPSHOT</version>
+  <version>1.4.5</version>
 
   <dependencies>
     <dependency>
