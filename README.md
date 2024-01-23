@@ -5,7 +5,7 @@ The common application library is a set of utilities to package an application.
 
 ## Features
 
-* Packaging utilities.
+* Utilities to run, configure and update an application.
 * ...
 
 ## Requirements
@@ -18,13 +18,7 @@ Project website:
 https://engine.yildiz-games.be
 
 Issue tracker:
-https://yildiz.atlassian.net/browse
-
-Wiki:
-https://yildiz.atlassian.net/wiki
-
-Quality report:
-https://sonarcloud.io/dashboard/index/be.yildiz-games:common-application
+https://github.com/yildiz-online/common-application/issues
 
 ## License
 
@@ -49,10 +43,9 @@ In your maven project, add the dependency
 <dependency>
     <groupId>be.yildiz-games</groupId>
     <artifactId>common-application</artifactId>
-    <version>LATEST</version>
+    <version>1.4.5</version>
 </dependency>
 ```
-Replace LATEST with the correct version.
 
 ## Contact
 Owner of this repository: Grégory Van den Borre
