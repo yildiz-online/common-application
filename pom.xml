@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ This file is part of the Yildiz-Engine project, licenced under the MIT License  (MIT)
-  ~  Copyright (c) 2018-2023 Grégory Van den Borre
+  ~  Copyright (c) 2018-2024 Grégory Van den Borre
   ~  More infos available: https://engine.yildiz-games.be
   ~  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
   ~  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,8 +17,8 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
   <modelVersion>4.0.0</modelVersion>
+
   <name>Yildiz-Engine Common Application</name>
   <description>Common Util library to build application.</description>
   <url>https://engine.yildiz-games.be</url>

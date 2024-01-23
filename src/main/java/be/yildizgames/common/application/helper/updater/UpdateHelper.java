@@ -1,6 +1,6 @@
 /*
  * This file is part of the Yildiz-Engine project, licenced under the MIT License  (MIT)
- *  Copyright (c) 2021-2023 Grégory Van den Borre
+ *  Copyright (c) 2021-2024 Grégory Van den Borre
  *  More infos available: https://engine.yildiz-games.be
  *  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  *  documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -66,7 +66,7 @@ public class UpdateHelper {
             try {
                 var config = Configuration.read(new HttpRequest(timeout).getReader(url));
                 if (config.requiresUpdate()) {
-                    config.update(
+                    var result = config.update(
                             UpdateOptions
                                     .archive(Path.of(archiveName))
                                     .updateHandler(new UpdateHandlerNotifier(listener)));
