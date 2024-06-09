@@ -70,7 +70,11 @@ public class UpdateHelper {
                             UpdateOptions
                                     .archive(Path.of(archiveName))
                                     .updateHandler(new UpdateHandlerNotifier(listener)));
-                    Archive.read(archiveName).install(true);
+                    if(result.getException()  != null) {
+                        Logger.getLogger(this).error(result.getException());
+                    } else {
+                        Archive.read(archiveName).install(true);
+                    }
                 } else {
                     listener.forEach(UpdateDownloadListener::fileUpToDate);
                 }
