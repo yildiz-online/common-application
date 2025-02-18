@@ -49,8 +49,13 @@ public abstract class UpdatableEntryPoint implements Launcher {
         Application.prepare(getApplicationName())
                 .withConfiguration(args, getDefaultConfiguration())
                 .withUpdate(getUpdateUrl(), 5)
+                .withConditionalUpdate(getConditionalUpdate())
                 .withSplashScreen(getSplashScreen())
                 .start(getStarter());
+    }
+
+    protected ConditionalUpdate getConditionalUpdate() {
+        return new AlwaysUpdate();
     }
 
     /**

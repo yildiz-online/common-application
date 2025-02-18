@@ -92,6 +92,8 @@ public class Application {
      */
     private UpdateSplashScreen splashScreen;
 
+    private ConditionalUpdate conditionalUpdate = new AlwaysUpdate();
+
     /**
      * Constructor, private to force using the static function start instead.
      *
@@ -211,6 +213,11 @@ public class Application {
         return this;
     }
 
+    public final Application withConditionalUpdate(ConditionalUpdate conditionalUpdate) {
+        this.conditionalUpdate = conditionalUpdate;
+        return this;
+    }
+
     /**
      * Initialize and start the application.
      *
@@ -291,6 +298,8 @@ public class Application {
      * @param url Url to call to get the update manifest.
      */
     private void update(String url) {
-        new UpdateHelper().update(url, "temp", Duration.ofMinutes(5), this.updateTimeOut, List.of(this.splashScreen));
+        if(this.conditionalUpdate.needUpdate()) {
+            new UpdateHelper().update(url, "temp", Duration.ofMinutes(5), this.updateTimeOut, List.of(this.splashScreen));
+        }
     }
 }
