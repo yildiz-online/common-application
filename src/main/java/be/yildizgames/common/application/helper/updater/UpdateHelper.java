@@ -16,7 +16,7 @@
 package be.yildizgames.common.application.helper.updater;
 
 import be.yildizgames.common.logging.Logger;
-import be.yildizgames.module.http.HttpRequest;
+import be.yildizgames.module.http.HttpClientBuilder;
 import org.update4j.Archive;
 import org.update4j.Configuration;
 import org.update4j.FileMetadata;
@@ -44,11 +44,14 @@ public class UpdateHelper {
      */
     private final Map<String, LocalDateTime> lastUpdate = new HashMap<>();
 
+    private final HttpClientBuilder httpClientBuilder;
+
     /**
      * Creates a new update helper.
      */
     public UpdateHelper() {
         super();
+        this.httpClientBuilder = HttpClientBuilder.provide();
     }
 
     /**
@@ -64,7 +67,7 @@ public class UpdateHelper {
         var now = LocalDateTime.now();
         if (!this.lastUpdate.containsKey(url) || now.isAfter(this.lastUpdate.computeIfAbsent(url, a -> now).plus(delay))) {
             try {
-                var config = Configuration.read(new HttpRequest(timeout).getReader(url));
+                var config = Configuration.read(this.httpClientBuilder.buildHttpClient(timeout).getReader(url));
                 if (config.requiresUpdate()) {
                     var result = config.update(
                             UpdateOptions
