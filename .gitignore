@@ -1,3 +1,4 @@
 common-application.iml
 target
 
+/config/configuration.properties
