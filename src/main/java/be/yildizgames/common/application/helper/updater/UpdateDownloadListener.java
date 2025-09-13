@@ -80,5 +80,7 @@ public interface UpdateDownloadListener {
      */
     default void startDownloadFile(Path file) {
     }
+
+    default void downloadFailure(Throwable t) {}
 }
 

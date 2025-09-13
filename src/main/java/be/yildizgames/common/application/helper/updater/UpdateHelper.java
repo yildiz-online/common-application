@@ -82,8 +82,9 @@ public class UpdateHelper {
                     listener.forEach(UpdateDownloadListener::fileUpToDate);
                 }
                 this.lastUpdate.put(url, now);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Logger.getLogger(this).error(e);
+                listener.forEach(l -> l.downloadFailure(e));
             }
         }
     }
