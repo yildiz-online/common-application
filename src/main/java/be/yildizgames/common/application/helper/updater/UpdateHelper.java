@@ -83,7 +83,6 @@ public class UpdateHelper {
                 }
                 this.lastUpdate.put(url, now);
             } catch (Exception e) {
-                Logger.getLogger(this).error(e);
                 listener.forEach(l -> l.downloadFailure(e));
             }
         }
