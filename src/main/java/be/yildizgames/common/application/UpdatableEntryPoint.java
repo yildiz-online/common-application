@@ -19,6 +19,9 @@ import be.yildizgames.common.application.helper.splashscreen.SplashScreenProvide
 import org.update4j.LaunchContext;
 import org.update4j.service.Launcher;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 
 /**
@@ -47,7 +50,7 @@ public abstract class UpdatableEntryPoint implements Launcher {
      */
     protected final void launch(String[] args) {
         Application.prepare(getApplicationName())
-                .withConfiguration(args, getDefaultConfiguration())
+                .withConfiguration(args, prepareDefaultConfiguration())
                 .withUpdate(getUpdateUrl(), 5)
                 .withConditionalUpdate(getConditionalUpdate())
                 .withSplashScreen(getSplashScreen())
@@ -85,6 +88,18 @@ public abstract class UpdatableEntryPoint implements Launcher {
      * @return The splash screen.
      */
     protected abstract SplashScreenProvider getSplashScreen();
+
+    private Properties prepareDefaultConfiguration() {
+        var config = Path.of("config");
+        if (Files.notExists(config)) {
+            try {
+                Files.createDirectory(config);
+            } catch (IOException e) {
+                throw new IllegalStateException("Config directory could not be created.", e);
+            }
+        }
+        return getDefaultConfiguration();
+    }
 
     /**
      * Provide the default configuration properties.
