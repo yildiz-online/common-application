@@ -23,7 +23,8 @@ import org.update4j.FileMetadata;
 import org.update4j.UpdateOptions;
 import org.update4j.service.UpdateHandler;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAmount;
@@ -67,7 +68,7 @@ public class UpdateHelper {
         var now = LocalDateTime.now();
         if (!this.lastUpdate.containsKey(url) || now.isAfter(this.lastUpdate.computeIfAbsent(url, a -> now).plus(delay))) {
             try {
-                var config = Configuration.read(this.httpClientBuilder.buildHttpClient(timeout).getReader(url));
+                var config = Configuration.read(new BufferedReader(new InputStreamReader(this.httpClientBuilder.buildHttpClient(timeout).getInputStream(url).body().orElseThrow())));
                 if (config.requiresUpdate()) {
                     var result = config.update(
                             UpdateOptions
