@@ -5,7 +5,7 @@ git:
 
 os: linux
 
-dist: jammy
+dist: noble
 
 cache:
   directories:
